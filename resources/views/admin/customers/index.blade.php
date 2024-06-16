@@ -2,45 +2,51 @@
 
 @section('content')
     @include('layouts.backend.alert')
-
-    <div class=" btn-group mb-3" role="group">
-        <button class="btn btn-secondary refresh " type="button">
-            <span>
-                <i class="bx bx-sync "> </i>
-                <span class="d-none d-sm-inline-block"></span>
-            </span>
-        </button>
-        <button class="btn  create-new btn-primary" type="button" data-toggle="modal" data-target="#create">
-            <span>
-                <i class="bx bx-plus"></i>
-                <span class="d-none d-sm-inline-block">Tambah Data</span>
-            </span>
-        </button>
+    <div class="dt-action-buttons text-end pt-3 pt-md-0 mb-4">
+        <div class=" btn-group " role="group">
+            <button class="btn btn-secondary refresh btn-default" type="button">
+                <span>
+                    <i class="bi bi-arrow-clockwise me-sm-1"> </i>
+                    <span class="d-none d-sm-inline-block"></span>
+                </span>
+            </button>
+            <button class="btn btn-secondary create-new btn-primary" type="button" data-bs-toggle="modal"
+                data-bs-target="#create">
+                <span>
+                    <i class="bi bi-plus me-sm-1"> </i>
+                    <span class="d-none d-sm-inline-block">Tambah Data</span>
+                </span>
+            </button>
+        </div>
     </div>
-    <div class="widget-content widget-content-area br-6">
-        <h3 class="">{{ $title ?? 'Title' }}</h3>
-        <div class="table-responsive mb-4 mt-4">
-            <table id="datatable-customers" class="table table-hover table-bordered dataTable" role="grid">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card-box mb-30">
+                <div class="card-body">
+                    <h2>{{ $title }}</h2>
+                </div>
+                <table id="datatable-customers" class="table table-h0ver  display mb-3">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
 
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-            </table>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
     @include('admin.customers.components.modal')

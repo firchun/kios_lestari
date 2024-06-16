@@ -1,94 +1,147 @@
-<!--  BEGIN SIDEBAR  -->
-<div class="sidebar-wrapper sidebar-theme">
+<div class="right-sidebar">
+    <div class="sidebar-title">
+        <h3 class="weight-600 font-16 text-blue">
+            Pengaturan letak
+            {{-- <span class="btn-block font-weight-400 font-12">User Interface Settings</span> --}}
+        </h3>
+        <div class="close-sidebar" data-toggle="right-sidebar-close">
+            <i class="icon-copy ion-close-round"></i>
+        </div>
+    </div>
+    <div class="right-sidebar-body customscroll">
+        <div class="right-sidebar-body-content">
+            <h4 class="weight-600 font-18 pb-10">Header Background</h4>
+            <div class="sidebar-btn-group pb-30 mb-10">
+                <a href="javascript:void(0);" class="btn btn-outline-primary header-white active">White</a>
+                <a href="javascript:void(0);" class="btn btn-outline-primary header-dark">Dark</a>
+            </div>
 
-    <nav id="sidebar">
+            <h4 class="weight-600 font-18 pb-10">Sidebar Background</h4>
+            <div class="sidebar-btn-group pb-30 mb-10">
+                <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-light">White</a>
+                <a href="javascript:void(0);" class="btn btn-outline-primary sidebar-dark active">Dark</a>
+            </div>
 
-        <ul class="navbar-nav theme-brand flex-row  text-center">
-            <li class="nav-item theme-logo">
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('backend_theme') }}/assets/img/favicon.ico" class="navbar-logo" alt="logo"
-                        style="width: 39px; height:39px; object-fit:cover;">
-                </a>
-            </li>
-            <li class="nav-item theme-text">
-                <a href="{{ url('/') }}" class="nav-link"> {{ env('APP_NAME') }} </a>
-            </li>
-            <li class="nav-item toggle-sidebar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-arrow-left sidebarCollapse">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-            </li>
-        </ul>
-        <div class="shadow-bottom"></div>
-        <ul class="list-unstyled menu-categories" id="accordionExample">
+            <h4 class="weight-600 font-18 pb-10">Menu Dropdown Icon</h4>
+            <div class="sidebar-radio-group pb-10 mb-10">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebaricon-1" name="menu-dropdown-icon" class="custom-control-input"
+                        value="icon-style-1" checked="" />
+                    <label class="custom-control-label" for="sidebaricon-1"><i class="fa fa-angle-down"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebaricon-2" name="menu-dropdown-icon" class="custom-control-input"
+                        value="icon-style-2" />
+                    <label class="custom-control-label" for="sidebaricon-2"><i class="ion-plus-round"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebaricon-3" name="menu-dropdown-icon" class="custom-control-input"
+                        value="icon-style-3" />
+                    <label class="custom-control-label" for="sidebaricon-3"><i
+                            class="fa fa-angle-double-right"></i></label>
+                </div>
+            </div>
 
-            <li class="menu menu-heading">
-                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg><span>Dashboard</span></div>
-            </li>
-            <li class="menu {{ request()->is('home') ? 'active' : '' }}">
-                <a href="{{ url('/home') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="bx bx-home bx-sm" style="vertical-align: middle;"></i>
-                        <span>Dashboard</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu menu-heading">
-                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg><span>Customer</span></div>
-            </li>
-            <li class="menu {{ request()->is('customers') ? 'active' : '' }}">
-                <a href="{{ url('/customers') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="bx bx-user bx-sm" style="vertical-align: middle;"></i>
-                        <span>Customers</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu menu-heading">
-                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg><span>Users</span></div>
-            </li>
-            <li class="menu {{ request()->is('users') ? 'active' : '' }}">
-                <a href="{{ url('/users') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="bx bx-user bx-sm" style="vertical-align: middle;"></i>
-                        <span>Users</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu menu-heading">
-                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg><span>Akun</span></div>
-            </li>
-            <li class="menu {{ request()->is('profile') ? 'active' : '' }}">
-                <a href="{{ route('profile') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="bx bx-user bx-sm" style="vertical-align: middle;"></i>
-                        <span>Profile</span>
-                    </div>
-                </a>
-            </li>
+            <h4 class="weight-600 font-18 pb-10">Menu List Icon</h4>
+            <div class="sidebar-radio-group pb-30 mb-10">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-1" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-1" checked="" />
+                    <label class="custom-control-label" for="sidebariconlist-1"><i class="ion-minus-round"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-2" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-2" />
+                    <label class="custom-control-label" for="sidebariconlist-2"><i class="fa fa-circle-o"
+                            aria-hidden="true"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-3" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-3" />
+                    <label class="custom-control-label" for="sidebariconlist-3"><i class="dw dw-check"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-4" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-4" checked="" />
+                    <label class="custom-control-label" for="sidebariconlist-4"><i
+                            class="icon-copy dw dw-next-2"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-5" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-5" />
+                    <label class="custom-control-label" for="sidebariconlist-5"><i
+                            class="dw dw-fast-forward-1"></i></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="sidebariconlist-6" name="menu-list-icon" class="custom-control-input"
+                        value="icon-list-style-6" />
+                    <label class="custom-control-label" for="sidebariconlist-6"><i class="dw dw-next"></i></label>
+                </div>
+            </div>
 
-        </ul>
-
-    </nav>
-
+            <div class="reset-options pt-30 text-center">
+                <button class="btn btn-danger" id="reset-settings">
+                    Reset Settings
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
-<!--  END SIDEBAR  -->
+<div class="left-side-bar">
+    <div class="brand-logo text-center">
+        <a href="{{ route('home') }}">
+            <img src="{{ asset('img') }}/logo.png" alt="" class="dark-logo"
+                style="height: 100%; width:auto;" />
+            <img src="{{ asset('img') }}/logo.png" alt="" class="light-logo"
+                style="height: 100%; width:auto;" />
+        </a>
+        <div class="close-sidebar" data-toggle="left-sidebar-close">
+            <i class="ion-close-round"></i>
+        </div>
+    </div>
+    <div class="menu-block customscroll">
+        <div class="sidebar-menu">
+            <ul id="accordion-menu">
+                <li>
+                    <a href="{{ route('home') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('home') ? 'active' : '' }}">
+                        <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('customers') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('customers*') ? 'active' : '' }}">
+                        <span class="micon bi bi-person"></span><span class="mtext">Customers</span>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-folder"></span><span class="mtext">Master Data</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="{{ route('produk') }}"
+                                class="{{ request()->is('produk') ? 'active' : '' }}">Produk</a></li>
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-people"></span><span class="mtext">Pengguna</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="{{ route('users') }}"
+                                class="{{ request()->is('users') ? 'active' : '' }}">Pengguna</a></li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{ url('/profile') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('profile*') ? 'active' : '' }}">
+                        <span class="micon bi bi-person-circle"></span><span class="mtext">Update Akun</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

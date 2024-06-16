@@ -1,87 +1,148 @@
-<!--  BEGIN NAVBAR  -->
-<div class="header-container fixed-top">
-    <header class="header navbar navbar-expand-sm">
-        <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-menu">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </a>
-
-        <ul class="navbar-item flex-row">
-            <li class="nav-item align-self-center page-heading">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h3>{{ $title ?? env('APP_NAME') }}</h3>
+<div class="header">
+    <div class="header-left">
+        <div class="menu-icon bi bi-list"></div>
+        {{-- <div class="search-toggle-icon bi bi-search" data-toggle="header_search"></div> --}}
+        {{-- <div class="header-search">
+            <form>
+                <div class="form-group mb-0">
+                    <i class="dw dw-search2 search-icon"></i>
+                    <input type="text" class="form-control search-input" placeholder="Search Here" />
+                    <div class="dropdown">
+                        <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
+                            <i class="ion-arrow-down-c"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">From</label>
+                                <div class="col-sm-12 col-md-10">
+                                    <input class="form-control form-control-sm form-control-line" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">To</label>
+                                <div class="col-sm-12 col-md-10">
+                                    <input class="form-control form-control-sm form-control-line" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-md-2 col-form-label">Subject</label>
+                                <div class="col-sm-12 col-md-10">
+                                    <input class="form-control form-control-sm form-control-line" type="text" />
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </li>
-        </ul>
-        <ul class="navbar-item flex-row search-ul">
-            <li class="nav-item align-self-center search-animated">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-search toggle-search">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <form class="form-inline search-full form-inline search" role="search">
-                    <div class="search-bar">
-                        <input type="text" class="form-control search-form-control  ml-lg-auto"
-                            placeholder="Search...">
-                    </div>
-                </form>
-            </li>
-        </ul>
-        <ul class="navbar-item flex-row navbar-dropdown">
-            <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
-                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-user">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+            </form>
+        </div> --}}
+    </div>
+    <div class="header-right">
+        <div class="dashboard-setting user-notification">
+            <div class="dropdown">
+                <a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
+                    <i class="dw dw-settings2"></i>
                 </a>
-                <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
-                    <div class="">
-                        <div class="dropdown-item text-center">
-                            <h4> {{ Str::limit(Auth::user()->name, 10) }}</h4>
-                        </div>
-                        <div class="dropdown-item">
-                            <a class="" href="{{ route('profile') }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-user">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg> My Profile</a>
-                        </div>
-
-                        <div class="dropdown-item">
-                            <a class="" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                  document.getElementById('logout-form').submit();">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                    <polyline points="16 17 21 12 16 7"></polyline>
-                                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                                </svg>Sign Out</span>
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
+            </div>
+        </div>
+        {{-- <div class="user-notification">
+            <div class="dropdown">
+                <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
+                    <i class="icon-copy dw dw-notification"></i>
+                    <span class="badge notification-active"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="notification-list mx-h-350 customscroll">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/img.jpg" alt="" />
+                                    <h3>John Doe</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/photo1.jpg" alt="" />
+                                    <h3>Lea R. Frith</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/photo2.jpg" alt="" />
+                                    <h3>Erik L. Richards</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/photo3.jpg" alt="" />
+                                    <h3>John Doe</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/photo4.jpg" alt="" />
+                                    <h3>Renee I. Hansen</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="vendors/images/img.jpg" alt="" />
+                                    <h3>Vicki M. Coleman</h3>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit, sed...
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </li>
-        </ul>
-    </header>
+            </div>
+        </div> --}}
+        <div class="user-info-dropdown">
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                    <span class="user-icon">
+                        <img src="{{ Auth::user()->avatar == null ? asset('img/user.png') : Storage::url(Auth::user()->avatar) }}"
+                            alt="" />
+                    </span>
+                    <span class="user-name">{{ Auth::user()->name }}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                    <a class="dropdown-item" href="{{ url('/profile') }}"><i class="dw dw-user1"></i> Profile</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();">
+                        <i class="dw dw-logout"></i> Log Out
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
-<!--  END NAVBAR  -->

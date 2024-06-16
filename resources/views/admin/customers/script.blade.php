@@ -28,20 +28,7 @@
                         data: 'action',
                         name: 'action'
                     }
-                ],
-                language: {
-                    paginate: {
-                        previous: '<i class="bx bx-chevron-left"></i>',
-                        next: '<i class="bx bx-chevron-right"></i>'
-                    },
-                    info: "Showing page _PAGE_ of _PAGES_",
-                    search: '<i class="bx bx-search"></i>',
-                    searchPlaceholder: "Search...",
-                    lengthMenu: "Results :  _MENU_"
-                },
-                stripeClasses: [],
-                lengthMenu: [7, 10, 20, 50],
-                pageLength: 7
+                ]
             });
             $('.create-new').click(function() {
                 $('#create').modal('show');

@@ -1,120 +1,194 @@
 <!DOCTYPE html>
 
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>{{ env('APP_NAME') }} - {{ $title ?? '' }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('backend_theme') }}/assets/img/favicon.ico" />
-    <link href="{{ asset('backend_theme') }}/assets/css/loader.css" rel="stylesheet" type="text/css" />
-    <script src="{{ asset('backend_theme') }}/assets/js/loader.js"></script>
-
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="{{ asset('backend_theme') }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend_theme') }}/assets/css/plugins.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend_theme') }}/assets/css/scrollspyNav.css" rel="stylesheet" type="text/css" />
-
-    <!-- END GLOBAL MANDATORY STYLES -->
-
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="{{ asset('backend_theme') }}/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/assets/css/elements/alert.css">
-    <style>
-        .btn-light {
-            border-color: transparent;
-        }
-    </style>
-    {{-- fonts --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.0/css/boxicons.min.css">
-    {{-- datatable --}}
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/plugins/table/datatable/datatables.css">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('backend_theme') }}/plugins/table/datatable/dt-global_style.css">
-
+    <!-- Basic Page Info -->
+    <meta charset="utf-8" />
+    <title>{{ $title ?? 'Home' }} - {{ env('APP_NAME') ?? 'Laravel' }}</title>
     @stack('css')
+    <!-- Site favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('backend_theme') }}/vendors/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/') }}/logo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/') }}/logo.png" />
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/vendors/styles/core.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/vendors/styles/icon-font.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('backend_theme') }}/src/plugins/datatables/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('backend_theme') }}/src/plugins/datatables/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/vendors/styles/style.css" />
+
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("config", "G-GBZ3SGGX85");
+    </script>
+
 </head>
 
-<body class="sidebar-noneoverflow">
-    <!-- BEGIN LOADER -->
-    <div id="load_screen">
-        <div class="loader">
-            <div class="loader-content">
-                <div class="spinner-grow align-self-center"></div>
+<body>
+    {{-- <div class="pre-loader">
+        <div class="pre-loader-box">
+            <div class="loader-logo">
+                <img src="{{ asset('backend_theme') }}/vendors/images/deskapp-logo.svg" alt="" />
             </div>
+            <div class="loader-progress" id="progress_div">
+                <div class="bar" id="bar1"></div>
+            </div>
+            <div class="percent" id="percent1">0%</div>
+            <div class="loading-text">Loading...</div>
         </div>
-    </div>
-    <!--  END LOADER -->
+    </div> --}}
     @include('layouts.backend.navbar')
-    <!--  BEGIN MAIN CONTAINER  -->
-    <div class="main-container" id="container">
-
-        <div class="overlay"></div>
-        <div class="search-overlay"></div>
-        @include('layouts.backend.menu')
-        <!--  BEGIN CONTENT AREA  -->
-        <div id="content" class="main-content">
-            <div class="layout-px-spacing">
-                <div class="layout-top-spacing">
-                    @include('layouts.backend.alert')
-
-                    @yield('content')
-                </div>
+    @include('layouts.backend.menu')
+    <div class="mobile-menu-overlay"></div>
+    <div class="main-container">
+        <div class="pd-ltr-20 xs-pd-20-10">
+            <div class="" style="min-height: calc(90vh - 120px);">
+                @include('layouts.backend.breadcrumbs')
+                @yield('content')
             </div>
-
             @include('layouts.backend.footer')
+
         </div>
-        <!--  END CONTENT AREA  -->
-        <!-- / Menu -->
     </div>
 
-    <!-- END MAIN CONTAINER -->
-
-    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-
-    <script src="{{ asset('backend_theme') }}/assets/js/libs/jquery-3.1.1.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/bootstrap/js/popper.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/bootstrap/js/bootstrap.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/assets/js/app.js"></script>
+    <!-- js -->
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/core.js"></script>
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/script.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/process.js"></script>
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/layout-settings.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/apexcharts/apexcharts.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/dashboard3.js"></script>
+    <!-- buttons for Export datatable -->
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/buttons.print.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/buttons.flash.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/pdfmake.min.js"></script>
+    <script src="{{ asset('backend_theme') }}/src/plugins/datatables/js/vfs_fonts.js"></script>
+    <!-- Datatable Setting js -->
+    <script src="{{ asset('backend_theme') }}/vendors/scripts/datatable-setting.js"></script>
+    @stack('js')
     <script>
-        $(document).ready(function() {
-            App.init();
+        $(".delete-button").on('click', function(e) {
+            e.preventDefault();
+            let form = $(this).parents('form');
 
+            swal.fire({
+                title: 'Apakah Anda yakin ingin menghapus data ini?',
+                text: 'Data yang dihapus tidak bisa dikembalikan',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batalkan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit()
+
+                    swal.fire(
+                        'Dikonfirmasi!',
+                        'Data akan dihapus.',
+                        'success'
+                    )
+                }
+            })
+        })
+        $(document).ready(function() {
+            $('#datatable').DataTable({
+                // responsive: true,
+                "language": {
+                    "lengthMenu": "Tampilkan _MENU_ ",
+                    "zeroRecords": "Maaf belum ada data",
+                    "info": "Tampilkan data _PAGE_ dari _PAGES_",
+                    "infoEmpty": "belum ada data",
+                    "infoFiltered": "(saring from _MAX_ total data)",
+                    "search": "Cari : ",
+                    "paginate": {
+                        "previous": "Sebelumnya ",
+                        "next": "Selanjutnya"
+                    }
+                }
+
+            });
+        });
+        $(document).ready(function() {
+            $('#datatable2').DataTable({
+                // responsive: true,
+                "language": {
+                    "lengthMenu": "Tampilkan _MENU_ ",
+                    "zeroRecords": "Maaf belum ada data",
+                    "info": "Tampilkan data _PAGE_ dari _PAGES_",
+                    "infoEmpty": "belum ada data",
+                    "infoFiltered": "(saring from _MAX_ total data)",
+                    "search": "Cari : ",
+                    "paginate": {
+                        "previous": "Sebelumnya ",
+                        "next": "Selanjutnya"
+                    }
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#datatable-export').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf'
+                ]
+            });
         });
     </script>
-    @stack('js')
-    <script src="{{ asset('backend_theme') }}/assets/js/custom.js"></script>
-    <!-- END GLOBAL MANDATORY SCRIPTS -->
-
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    <script src="{{ asset('backend_theme') }}/assets/js/scrollspyNav.js"></script>
-    <script src="{{ asset('backend_theme') }}/assets/js/dashboard/dash_1.js"></script>
-    <script src="{{ asset('backend_theme') }}/plugins/table/datatable/datatables.js"></script>
-    <script src="{{ asset('backend_theme') }}/plugins/sweetalerts/sweetalert2.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/plugins/sweetalerts/custom-sweetalert.js"></script>
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-
+    <script>
+        flatpickr("input[type=date]");
+    </script>
     @if (Session::has('danger'))
         <script>
-            swal({
+            Swal.fire({
                 title: 'Error!',
                 text: ' {{ Session::get('danger') }}',
                 type: 'error',
                 icon: 'error',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             })
         </script>
     @endif
 
     @if (Session::has('success'))
         <script>
-            swal({
+            Swal.fire({
                 title: 'Good job!',
                 text: '{{ Session::get('success') }}',
                 type: 'success',
+                icon: 'success',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             })
         </script>
     @endif

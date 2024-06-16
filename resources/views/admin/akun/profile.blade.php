@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card-box mb-4">
                 <div class="user-profile-header-banner">
                     <img src="{{ asset('img') }}/profile-banner.png" alt="Banner image" class="rounded-top"
                         style="object-fit: cover; width:100%;">
@@ -35,12 +35,8 @@
         </div>
     </div>
     <div class="row">
-
-
         <div class="col-12  order-lg-1">
-
-            <div class="card shadow mb-4">
-
+            <div class="card-box shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">My Account</h6>
                 </div>

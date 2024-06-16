@@ -1,38 +1,84 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>CORK Admin Template - Login Page</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="{{ asset('backend_theme') }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend_theme') }}/assets/css/plugins.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend_theme') }}/assets/css/authentication/form-2.css" rel="stylesheet" type="text/css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- Basic Page Info -->
+    <meta charset="utf-8" />
+    <title>Authentication - {{ env('APP_NAME') ?? 'Laravel' }} </title>
+
+    <!-- Site favicon -->
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ asset('backend_theme/') }}/vendors/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/') }}/logo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/') }}/logo.png" />
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme/') }}/vendors/styles/core.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme/') }}/vendors/styles/icon-font.min.css" />
     <link rel="stylesheet" type="text/css"
-        href="{{ asset('backend_theme') }}/assets/css/forms/theme-checkbox-radio.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme') }}/assets/css/forms/switches.css">
+        href="{{ asset('backend_theme/') }}/src/plugins/jquery-steps/jquery.steps.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend_theme/') }}/vendors/styles/style.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("config", "G-GBZ3SGGX85");
+    </script>
+
 </head>
 
-<body class="form">
-
-
-    <div class="form-container outer">
-        @yield('content')
+<body class="login-page">
+    <!-- Content -->
+    <div class="login-header box-shadow">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="brand-logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('img/') }}/logo.png" alt="" style="height: 100%; width:auto;" />
+                </a>
+            </div>
+            <div class="login-menu">
+                <ul>
+                    @if ($title == 'login')
+                        <li><a href="{{ route('register') }}">Register</a></li>
+                    @elseif($title == 'register')
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+        <div class="container">
+            @yield('content')
+        </div>
     </div>
 
 
-    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend_theme') }}/assets/js/libs/jquery-3.1.1.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/bootstrap/js/popper.min.js"></script>
-    <script src="{{ asset('backend_theme') }}/bootstrap/js/bootstrap.min.js"></script>
+    <!-- / Content -->
 
-    <!-- END GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend_theme') }}/assets/js/authentication/form-2.js"></script>
+
+    <!-- js -->
+    <script src="{{ asset('backend_theme/') }}/vendors/scripts/core.js"></script>
+    <script src="{{ asset('backend_theme/') }}/vendors/scripts/script.min.js"></script>
+    <script src="{{ asset('backend_theme/') }}/vendors/scripts/process.js"></script>
+    <script src="{{ asset('backend_theme/') }}/vendors/scripts/layout-settings.js"></script>
+    <script src="{{ asset('backend_theme/') }}/src/plugins/jquery-steps/jquery.steps.js"></script>
+    {{-- <script src="{{ asset('backend_theme/') }}/vendors/scripts/steps-setting.js"></script> --}}
+
 
 </body>
 

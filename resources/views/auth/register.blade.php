@@ -1,121 +1,69 @@
 @extends('layouts.auth.app')
 
 @section('content')
-    <div class="form-form">
-        <div class="form-form-wrap">
-            <div class="form-container">
-                <div class="form-content">
-                    <form method="POST" action="{{ route('register') }}">
+    @php
+        $title = 'register';
+    @endphp
+    <div class=" align-items-center row">
+        <div class="col-md-6 col-lg-7">
+            <img src="{{ asset('backend_theme') }}/vendors/images/register-page-img.png" alt="" />
+        </div>
+        <div class="col-md-6 col-lg-5">
+            <div class="login-box bg-white box-shadow border-radius-10">
+                <div class="wizard-content">
+                    <form class="tab-wizard2 wizard-circle p-3" method="POST" action="{{ route('register') }}">
                         @csrf
-                        <!-- Logo -->
-                        <h1 class="">Register</h1>
-                        <p class="signup-link register">Already have an account? <a href="{{ route('login') }}">Log in</a>
-                        </p>
-
-                        <form id="formAuthentication" class="text-left " action="" method="POST">
-                            <div class="form">
-
-                                <div id="name-field" class="field-wrapper input">
-                                    <div class="d-flex justify-content-between">
-                                        <label for="name">NAMA LENGKAP</label>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    <input id="name" name="name" type="text" class="form-control"
-                                        placeholder="Nama Lengkap">
-                                    @error('name')
-                                        <span class="text-danger" role="alert">
-                                            <small>{{ $message }}</small>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div id="email-field" class="field-wrapper input">
-                                    <div class="d-flex justify-content-between">
-                                        <label for="email">EMAIL</label>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-at-sign register">
-                                        <circle cx="12" cy="12" r="4"></circle>
-                                        <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
-                                    </svg>
-                                    <input id="email" name="email" type="text" value="" class="form-control"
-                                        placeholder="Email">
-                                    @error('email')
-                                        <span class="text-danger" role="alert">
-                                            <small>{{ $message }}</small>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div id="password-field" class="field-wrapper input mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <label for="password">PASSWORD</label>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
-                                        </rect>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                    </svg>
-                                    <input id="password" name="password" type="password" class="form-control"
-                                        placeholder="Password">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" id="toggle-password"
-                                        class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                    @error('password')
-                                        <span class="text-danger" role="alert">
-                                            <small>{{ $message }}</small>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div id="password-field" class="field-wrapper input mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <label for="password">KONFIRMASI PASSWORD</label>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
-                                        </rect>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                    </svg>
-                                    <input id="password-confirm" name="password_confirmation" required
-                                        autocomplete="new-password" type="password" class="form-control"
-                                        placeholder="Konfirmasi Password">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" id="toggle-password2"
-                                        class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                    @error('password_confirmation')
-                                        <span class="text-danger" role="alert">
-                                            <small>{{ $message }}</small>
-                                        </span>
-                                    @enderror
-
-                                </div>
-
-                                <div class="d-sm-flex justify-content-between">
-                                    <div class="field-wrapper">
-                                        <button type="submit" class="btn btn-primary" value="">Daftar!</button>
-                                    </div>
-                                </div>
+                        <div class="login-title mb-4">
+                            <h2 class="text-center text-primary">Register To {{ env('APP_NAME') }}</h2>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-form-label">Email Address*</label>
+                            <div class="">
+                                <input type="email" class="form-control" name="email" required />
                             </div>
-                        </form>
-
+                            @error('email')
+                                <span class="text-danger" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group ">
+                            <label class=" col-form-label">Nama Lengkap*</label>
+                            <div class="">
+                                <input type="text" class="form-control" name="name" required />
+                            </div>
+                            @error('name')
+                                <span class="text-danger" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group ">
+                            <label class=" col-form-label">Password*</label>
+                            <div class="">
+                                <input type="password" class="form-control" name="password" />
+                            </div>
+                            @error('password')
+                                <span class="text-danger" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group ">
+                            <label class=" col-form-label">Confirm Password*</label>
+                            <div class="">
+                                <input type="password" class="form-control" name="password_confirmation" required
+                                    id="password-confirm" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                        <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">
+                            OR
+                        </div>
+                        <div class="input-group mb-0">
+                            <a class="btn btn-outline-primary btn-lg btn-block" href="{{ route('login') }}">Already your
+                                account?</a>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,12 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/customers-datatable', [CustomerController::class, 'getCustomersDataTable']);
 });
 Route::middleware(['auth:web', 'role:Admin'])->group(function () {
+    //produk managemen
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
+    Route::post('/produk/store',  [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/produk/edit/{id}',  [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::delete('/produk/delete/{id}',  [ProdukController::class, 'destroy'])->name('produk.delete');
+    Route::get('/produk-datatable', [ProdukController::class, 'getProdukDataTable']);
     //user managemen
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::post('/users/store',  [UserController::class, 'store'])->name('users.store');

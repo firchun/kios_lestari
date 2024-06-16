@@ -33,6 +33,9 @@
                     }
                 ]
             });
+            $('.refresh').click(function() {
+                $('#datatable-users').DataTable().ajax.reload();
+            });
             $('.create-new').click(function() {
                 $('#create').modal('show');
             });
