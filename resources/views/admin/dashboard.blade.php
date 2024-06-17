@@ -18,11 +18,11 @@
             'icon' => 'user',
         ])
         @include('admin.dashboard_component.card1', [
-            'count' => $customers,
-            'title' => 'Customers',
-            'subtitle' => 'Total Customers',
+            'count' => $Produk,
+            'title' => 'Produk',
+            'subtitle' => 'Total Produk',
             'color' => 'success',
-            'icon' => 'user',
+            'icon' => 'image',
         ])
     </div>
 @endsection

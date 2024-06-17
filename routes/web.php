@@ -3,7 +3,11 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StokController;
 use App\Http\Controllers\UserController;
+use App\Models\Produk;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,11 +23,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $title = 'Home';
+    $setting = Setting::getSetting();
+    $produk = Produk::latest()->limit(4)->get();
+    return view('pages.index', ['title' => $title, 'setting' => $setting, 'produk' => $produk]);
 });
-
+Route::get('/about', function () {
+    $title = 'About';
+    $setting = Setting::getSetting();
+    return view('pages.about', ['title' => $title, 'setting' => $setting]);
+});
+Route::get('/semua-produk', function () {
+    $title = 'Semua Produk';
+    $setting = Setting::getSetting();
+    return view('pages.semua-produk', ['title' => $title, 'setting' => $setting]);
+});
+Auth::routes(['verify' => true]);
 Auth::routes();
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //akun managemen
@@ -36,7 +53,15 @@ Route::middleware(['auth:web'])->group(function () {
     Route::delete('/customers/delete/{id}',  [CustomerController::class, 'destroy'])->name('customers.delete');
     Route::get('/customers-datatable', [CustomerController::class, 'getCustomersDataTable']);
 });
-Route::middleware(['auth:web', 'role:Admin'])->group(function () {
+Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting');
+    Route::put('/setting/update', [SettingController::class, 'update'])->name('setting.update');
+    //stok managemen
+    Route::get('/stok', [StokController::class, 'index'])->name('stok');
+    Route::post('/stok/store',  [StokController::class, 'store'])->name('stok.store');
+    Route::get('/stok/edit/{id}',  [StokController::class, 'edit'])->name('stok.edit');
+    Route::delete('/stok/delete/{id}',  [StokController::class, 'destroy'])->name('stok.delete');
+    Route::get('/stok-datatable', [StokController::class, 'getStoksDataTable']);
     //produk managemen
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
     Route::post('/produk/store',  [ProdukController::class, 'store'])->name('produk.store');

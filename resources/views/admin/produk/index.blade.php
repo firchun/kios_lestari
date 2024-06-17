@@ -25,11 +25,13 @@
                 <div class="card-body">
                     <h2>{{ $title }}</h2>
                 </div>
-                <table id="datatable-produk" class="table table-h0ver  display mb-3">
+                <table id="datatable-produk" class="table table-hover  display mb-3">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nama Produk</th>
+                            <th>Harga Produk</th>
+                            <th>Stok</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,6 +40,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Produk</th>
+                            <th>Harga Produk</th>
+                            <th>Stok</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>

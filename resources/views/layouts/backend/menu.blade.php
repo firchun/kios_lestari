@@ -108,12 +108,7 @@
                         <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('customers') }}"
-                        class="dropdown-toggle no-arrow {{ request()->is('customers*') ? 'active' : '' }}">
-                        <span class="micon bi bi-person"></span><span class="mtext">Customers</span>
-                    </a>
-                </li>
+
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-folder"></span><span class="mtext">Master Data</span>
@@ -135,6 +130,18 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="{{ url('/stok') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('stok*') ? 'active' : '' }}">
+                        <span class="micon bi bi-folder"></span><span class="mtext">Riwayat Stok</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/setting') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('setting*') ? 'active' : '' }}">
+                        <span class="micon bi bi-gear"></span><span class="mtext">Pengaturan</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ url('/profile') }}"
                         class="dropdown-toggle no-arrow {{ request()->is('profile*') ? 'active' : '' }}">

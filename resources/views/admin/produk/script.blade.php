@@ -3,8 +3,9 @@
         $(function() {
             $('#datatable-produk').DataTable({
                 processing: true,
-                serverSide: true,
-                responsive: true,
+                serverSide: false,
+                responsive: false,
+                scrollX: false,
                 ajax: '{{ url('produk-datatable') }}',
                 columns: [{
                         data: 'id',
@@ -12,8 +13,16 @@
                     },
 
                     {
-                        data: 'nama_produk',
-                        name: 'nama_produk'
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'harga',
+                        name: 'harga'
+                    },
+                    {
+                        data: 'stok',
+                        name: 'stok'
                     },
 
                     {
@@ -34,10 +43,22 @@
                     url: '/produk/edit/' + id,
                     success: function(response) {
                         $('#customersModalLabel').text('Edit Customer');
-                        $('#formCustomerId').val(response.id);
-                        $('#formCustomerName').val(response.name);
-                        $('#formCustomerPhone').val(response.phone);
-                        $('#formCustomerAddress').val(response.address);
+                        $('#formProdukId').val(response.id);
+                        $('#formCustomerName').val(response.nama_produk);
+                        $('#formCustomerHargProduk').val(response.harga_produk);
+                        $('#formCustomeKeteranganProduk').val(response.keterangan_produk);
+
+                        // Clear options first (optional, if you are dynamically populating options)
+                        $('#formCustomerSatuanProduk').empty();
+
+                        // Populate options for Satuan Produk
+                        var options = '';
+                        options += '<option value="kubik" ' + (response.satuan_produk === 'kubik' ?
+                            'selected' : '') + '>Kubik</option>';
+                        options += '<option value="ret" ' + (response.satuan_produk === 'ret' ?
+                            'selected' : '') + '>Ret</option>';
+                        $('#formCustomerSatuanProduk').html(options);
+
                         $('#customersModal').modal('show');
                     },
                     error: function(xhr) {
@@ -80,7 +101,7 @@
                         alert(response.message);
                         $('#customersModalLabel').text('Edit Customer');
                         $('#formCustomerName').val('');
-                        $('#datatable-customers').DataTable().ajax.reload();
+                        $('#datatable-produk').DataTable().ajax.reload();
                         $('#create').modal('hide');
                     },
                     error: function(xhr) {
@@ -88,8 +109,9 @@
                     }
                 });
             });
+
             window.deleteCustomers = function(id) {
-                if (confirm('Apakah Anda yakin ingin menghapus pelanggan ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                     $.ajax({
                         type: 'DELETE',
                         url: '/produk/delete/' + id,
@@ -98,7 +120,7 @@
                         },
                         success: function(response) {
                             // alert(response.message);
-                            $('#datatable-customers').DataTable().ajax.reload();
+                            $('#datatable-produk').DataTable().ajax.reload();
                         },
                         error: function(xhr) {
                             alert('Terjadi kesalahan: ' + xhr.responseText);
@@ -106,6 +128,40 @@
                     });
                 }
             };
+            window.tambahStok = function(id) {
+                $('#tambah-stok').modal('show');
+                $.ajax({
+                    type: 'GET',
+                    url: '/produk/edit/' + id,
+                    success: function(response) {
+                        $('#stokProdukId').val(response.id);
+                        $('#txtNamaProduk').text(response.nama_produk);
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            };
+            $('#btnTambahStok').click(function() {
+                var formData = $('#formTambahStok').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/stok/store',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#datatable-produk').DataTable().ajax.reload();
+                        $('#tambah-stok').modal('hide');
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            });
         });
     </script>
 @endpush

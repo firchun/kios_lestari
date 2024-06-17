@@ -8,7 +8,7 @@
     <title>{{ $title ?? 'Home' }} - {{ env('APP_NAME') ?? 'Laravel' }}</title>
     @stack('css')
     <!-- Site favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('backend_theme') }}/vendors/images/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/') }}/logo.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/') }}/logo.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/') }}/logo.png" />
 
