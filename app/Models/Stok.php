@@ -21,7 +21,7 @@ class Stok extends Model
     public static function getStok($id_produk)
     {
         $stokMasuk = Self::where('id_produk', $id_produk)->where('jenis', 'masuk')->sum('jumlah');
-        $stokKeluar = Self::where('id_produk', $id_produk)->where('jenis', ['keluar', 'rusak'])->sum('jumlah');
+        $stokKeluar = Self::where('id_produk', $id_produk)->where('jenis', ['penjualan', 'rusak'])->sum('jumlah');
 
         return $stokMasuk - $stokKeluar;
     }

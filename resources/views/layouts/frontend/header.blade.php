@@ -17,9 +17,15 @@
                       <a href="{{ route('login') }}" class="login-panel"> <i class="fa fa-user"></i>Login</a>
                   @else
                       @if (Auth::user()->role != 'User')
-                          <a href="{{ route('home') }}" class="login-panel"><i class="fa fa-user"></i>Dashboard</a>
+                          <a href="{{ route('home') }}" class="login-panel"><i class="fa fa-home"></i>Dashboard</a>
                       @else
-                          <a href="#" class="login-panel"><i class="fa fa-user"></i>Akun</a>
+                          <a href="{{ route('logout') }}"
+                              onclick="event.preventDefault();
+                   document.getElementById('logout-form').submit();"
+                              class="login-panel text-danger"><i class="fa fa-power-off"></i>Logout</a>
+                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                              @csrf
+                          </form>
                       @endif
                   @endguest
 
@@ -36,7 +42,7 @@
           <div class="inner-header">
               <div class="row align-items-center">
                   <div class="col-lg-2 col-md-7 text-center">
-                      <div class="logo">
+                      <div class="logo mb-3">
                           <a href="{{ url('/') }}">
                               <img src="{{ asset('img/logo.png') }}" alt="" style="height: 100px; width:auto;">
                           </a>
@@ -46,65 +52,21 @@
                       <h1 class="text-center">{{ env('APP_NAME') }}</h1>
                   </div>
                   <div class="col-lg-3 text-right col-md-3">
-                      <ul class="nav-right">
+                      {{-- <ul class="nav-right">
                           <li class="heart-icon">
                               <a href="#">
                                   <i class="icon_heart_alt"></i>
                                   <span>1</span>
-                              </a>
-                          </li>
-                          <li class="cart-icon">
-                              <a href="#">
-                                  <i class="icon_bag_alt"></i>
-                                  <span>3</span>
-                              </a>
-                              <div class="cart-hover">
-                                  <div class="select-items">
-                                      <table>
-                                          <tbody>
-                                              <tr>
-                                                  <td class="si-pic"><img
-                                                          src="{{ asset('frontend_theme') }}/img/select-product-1.jpg"
-                                                          alt=""></td>
-                                                  <td class="si-text">
-                                                      <div class="product-selected">
-                                                          <p>$60.00 x 1</p>
-                                                          <h6>Kabino Bedside Table</h6>
-                                                      </div>
-                                                  </td>
-                                                  <td class="si-close">
-                                                      <i class="ti-close"></i>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td class="si-pic"><img
-                                                          src="{{ asset('frontend_theme') }}/img/select-product-2.jpg"
-                                                          alt=""></td>
-                                                  <td class="si-text">
-                                                      <div class="product-selected">
-                                                          <p>$60.00 x 1</p>
-                                                          <h6>Kabino Bedside Table</h6>
-                                                      </div>
-                                                  </td>
-                                                  <td class="si-close">
-                                                      <i class="ti-close"></i>
-                                                  </td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                                  <div class="select-total">
-                                      <span>total:</span>
-                                      <h5>$120.00</h5>
-                                  </div>
-                                  <div class="select-button">
-                                      <a href="#" class="primary-btn view-card">VIEW CARD</a>
-                                      <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
-                                  </div>
-                              </div>
-                          </li>
+                      </a>
+                      </li>
+                      <li class="cart-icon">
+                          <a href="#">
+                              <i class="fa fa-xl fa-user"></i>
+                              <span>3</span>
+                          </a>
+                      </li>
 
-                      </ul>
+                      </ul> --}}
                   </div>
               </div>
           </div>
@@ -119,6 +81,16 @@
                               href="{{ url('/semua-produk') }}">Semua Produk</a></li>
                       <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="{{ url('/about') }}">About</a>
                       </li>
+                      @if (Auth::check())
+                          @if (Auth::user()->role == 'User')
+                              <li class="{{ request()->is('pesanan') ? 'active' : '' }}"><a
+                                      href="{{ url('/pesanan') }}">Pemesanan</a>
+                              </li>
+                              <li class="{{ request()->is('my-akun') ? 'active' : '' }}"><a
+                                      href="{{ url('/my-akun') }}">Akun : {{ Auth::user()->name }}</a>
+                              </li>
+                          @endif
+                      @endif
                   </ul>
               </nav>
               <div id="mobile-menu-wrap"></div>

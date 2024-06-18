@@ -19,15 +19,13 @@
                 <div class="card-body">
                     <h2>{{ $title }}</h2>
                 </div>
-                <table id="datatable-stok" class="table table-hover table-sm display mb-3">
+                <table id="datatable-return" class="table table-hover table-sm display mb-3">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
                             <th>Produk</th>
-                            <th>jenis</th>
                             <th>Jumlah</th>
-
                         </tr>
                     </thead>
 
@@ -36,7 +34,6 @@
                             <th>ID</th>
                             <th>Tanggal</th>
                             <th>Produk</th>
-                            <th>jenis</th>
                             <th>Jumlah</th>
 
                         </tr>
@@ -45,6 +42,6 @@
             </div>
         </div>
     </div>
-    @include('admin.stok.components.modal')
+    @include('admin.return.components.modal')
 @endsection
-@include('admin.stok.script')
+@include('admin.return.script')

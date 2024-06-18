@@ -19,15 +19,17 @@
                 <div class="card-body">
                     <h2>{{ $title }}</h2>
                 </div>
-                <table id="datatable-stok" class="table table-hover table-sm display mb-3">
+                <table id="datatable-pesanan" class="table table-hover  display mb-3">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
-                            <th>Produk</th>
-                            <th>jenis</th>
+                            <th>Invoice</th>
+                            <th>Nama Produk</th>
                             <th>Jumlah</th>
-
+                            <th>Tagihan</th>
+                            <th>Pengantaran</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -35,16 +37,18 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
-                            <th>Produk</th>
-                            <th>jenis</th>
+                            <th>Invoice</th>
+                            <th>Nama Produk</th>
                             <th>Jumlah</th>
-
+                            <th>Tagihan</th>
+                            <th>Pengantaran</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     </div>
-    @include('admin.stok.components.modal')
+    @include('admin.pesanan.components.modal')
 @endsection
-@include('admin.stok.script')
+@include('admin.pesanan.script')

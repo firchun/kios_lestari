@@ -51,6 +51,26 @@
     <script src="{{ asset('frontend_theme') }}/js/jquery.slicknav.js"></script>
     <script src="{{ asset('frontend_theme') }}/js/owl.carousel.min.js"></script>
     <script src="{{ asset('frontend_theme') }}/js/main.js"></script>
+    <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+            });
+        </script>
+    @endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+    @endif
 </body>
 
 </html>

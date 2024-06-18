@@ -121,6 +121,22 @@
                 </li>
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-folder"></span><span class="mtext">Transaksi</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="{{ route('pemesanan') }}"
+                                class="{{ request()->is('pemesanan') ? 'active' : '' }}">Pemesanan</a>
+                        </li>
+                        <li><a href="{{ route('return') }}"
+                                class="{{ request()->is('return') ? 'active' : '' }}">Return Barang</a>
+                        </li>
+                        <li><a href="#">Pengantaran</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-people"></span><span class="mtext">Pengguna</span>
                     </a>
                     <ul class="submenu">
