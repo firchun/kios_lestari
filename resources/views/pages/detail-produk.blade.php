@@ -58,8 +58,8 @@
                     <a href="{{ route('login') }}" class="btn primary-btn">Login Sekarang </a>
                 @else
                     <button type="submit" class=" btn primary-btn" data-toggle="modal" data-target="#modalPemesanan">Pesan
-                    @endguest
-                    Sekarang</button>
+                        Sekarang</button>
+                @endguest
             </div>
         </div>
         <hr>
