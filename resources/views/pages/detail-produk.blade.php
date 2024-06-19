@@ -54,8 +54,11 @@
                         $produk->satuan_produk
                     : '<strong class="text-danger">Habis</strong>' !!}
                 </p>
-
-                <button type="submit" class=" btn primary-btn" data-toggle="modal" data-target="#modalPemesanan">Pesan
+                @guest
+                    <a href="{{ route('login') }}" class="btn primary-btn">Login Sekarang </a>
+                @else
+                    <button type="submit" class=" btn primary-btn" data-toggle="modal" data-target="#modalPemesanan">Pesan
+                    @endguest
                     Sekarang</button>
             </div>
         </div>
