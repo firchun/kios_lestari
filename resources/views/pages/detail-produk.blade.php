@@ -53,6 +53,14 @@
                         '</strong> ' .
                         $produk->satuan_produk
                     : '<strong class="text-danger">Habis</strong>' !!}
+                    <br>
+                    @if (App\Models\Stok::getStok($produk->id) == 0)
+                        <small class="text-mutted"><i>
+                                barang telah habis / ingin memesan melebihi stok yang tersedia, anda dapat melakukan
+                                pemesanan
+                                terlebih dahulu
+                                (pre-order)</i></small>
+                    @endif
                 </p>
                 @guest
                     <a href="{{ route('login') }}" class="btn primary-btn">Login Sekarang </a>
