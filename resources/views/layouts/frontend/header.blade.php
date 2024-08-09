@@ -49,7 +49,7 @@
                       </div>
                   </div>
                   <div class="col-lg-7 col-md-12 d-none d-sm-inline-block">
-                      <h1 class="text-center">{{ env('APP_NAME') }}</h1>
+                      <h1 class="text-center font-weight-bold">{{ env('APP_NAME') }}</h1>
                   </div>
                   <div class="col-lg-3 text-right col-md-3">
                       {{-- <ul class="nav-right">
@@ -83,11 +83,21 @@
                       </li>
                       @if (Auth::check())
                           @if (Auth::user()->role == 'User')
+                              <li class="{{ request()->is('keranjang') ? 'active' : '' }}"><a
+                                      href="{{ url('/keranjang') }}">Keranjang
+                                      <span
+                                          class="badge badge-danger">{{ App\Models\Keranjang::getCountKeranjang(Auth::id()) }}</span>
+                                  </a>
+                              </li>
                               <li class="{{ request()->is('pesanan') ? 'active' : '' }}"><a
-                                      href="{{ url('/pesanan') }}">Pemesanan</a>
+                                      href="{{ url('/pesanan') }}">Pemesanan
+
+                                      <span
+                                          class="badge badge-danger">{{ App\Models\Pesanan::getCountPesanan(Auth::id()) }}</span>
+                                  </a>
                               </li>
                               <li class="{{ request()->is('my-akun') ? 'active' : '' }}"><a
-                                      href="{{ url('/my-akun') }}">Akun : {{ Auth::user()->name }}</a>
+                                      href="{{ url('/my-akun') }}">Akun Saya</a>
                               </li>
                           @endif
                       @endif

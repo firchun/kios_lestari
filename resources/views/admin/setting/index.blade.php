@@ -9,6 +9,10 @@
                 <h2>{{ $title }}</h2>
                 <hr>
                 <div class="mb-3">
+                    <label>Jumlah point dalam 1 kali pemesanan</label>
+                    <input type="number" name="point" class="form-control" value="{{ $setting->point }}">
+                </div>
+                <div class="mb-3">
                     <label>Nomor HP/WA Aktif</label>
                     <input name="no_hp" class="form-control" value="{{ $setting->no_hp }}">
                 </div>

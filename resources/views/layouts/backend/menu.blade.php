@@ -116,6 +116,9 @@
                     <ul class="submenu">
                         <li><a href="{{ route('produk') }}"
                                 class="{{ request()->is('produk') ? 'active' : '' }}">Produk</a></li>
+                        <li><a href="{{ route('area') }}" class="{{ request()->is('area') ? 'active' : '' }}">Area
+                                pengantaran </a>
+                        </li>
 
                     </ul>
                 </li>
@@ -127,10 +130,14 @@
                         <li><a href="{{ route('pemesanan') }}"
                                 class="{{ request()->is('pemesanan') ? 'active' : '' }}">Pemesanan</a>
                         </li>
+                        <li><a href="{{ route('pembayaran') }}"
+                                class="{{ request()->is('pembayaran') ? 'active' : '' }}">Pembayaran</a>
+                        </li>
                         <li><a href="{{ route('return') }}"
                                 class="{{ request()->is('return') ? 'active' : '' }}">Return Barang</a>
                         </li>
-                        <li><a href="#">Pengantaran</a>
+                        <li><a href="{{ route('pengantaran') }}"
+                                class="{{ request()->is('pengantaran') ? 'active' : '' }}"> Status Pengantaran</a>
                         </li>
 
                     </ul>
@@ -146,6 +153,17 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="{{ route('point') }}"
+                        class="dropdown-toggle no-arrow {{ request()->is('point') ? 'active' : '' }}">
+                        <span class="micon bi bi-star"></span><span class="mtext">Point Pelanggan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="dropdown-toggle no-arrow ">
+                        <span class="micon bi bi-telephone"></span><span class="mtext">Chat Pelanggan</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ url('/stok') }}"
                         class="dropdown-toggle no-arrow {{ request()->is('stok*') ? 'active' : '' }}">

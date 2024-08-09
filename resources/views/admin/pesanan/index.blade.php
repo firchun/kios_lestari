@@ -28,7 +28,8 @@
                             <th>Nama Produk</th>
                             <th>Jumlah</th>
                             <th>Tagihan</th>
-                            <th>Pengantaran</th>
+                            <th>Diantar</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -41,7 +42,8 @@
                             <th>Nama Produk</th>
                             <th>Jumlah</th>
                             <th>Tagihan</th>
-                            <th>Pengantaran</th>
+                            <th>Diantar</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>

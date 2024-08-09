@@ -43,4 +43,16 @@ class Pesanan extends Model
 
         return $newInvoiceNumber;
     }
+    static function getCountPesanan($id_user)
+    {
+        return Self::where('id_user', $id_user)
+            ->where('status', '!=', 'pesanan telah selesai')
+            ->where('status', '!=', 'pesanan sampai di lokasi tujuan')
+            ->count();
+    }
+    static function getCountProduk($id_produk)
+    {
+        return Self::where('id_produk', $id_produk)
+            ->count();
+    }
 }

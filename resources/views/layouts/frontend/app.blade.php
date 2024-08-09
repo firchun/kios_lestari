@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/') }}/logo.png" />
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('frontend_theme') }}/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend_theme') }}/css/font-awesome.min.css" type="text/css">
@@ -26,6 +26,29 @@
     <link rel="stylesheet" href="{{ asset('frontend_theme') }}/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend_theme') }}/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend_theme') }}/css/style.css" type="text/css">
+    <style>
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1050;
+        }
+
+        .chat-button .btn {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.46);
+        }
+
+        .chat-button .btn:hover {
+            background-color: #004692;
+        }
+    </style>
 </head>
 
 <body>
@@ -36,7 +59,12 @@
     @include('layouts.frontend.header')
 
     @yield('content')
-
+    <!-- Tombol Chat -->
+    <div class="chat-button">
+        <a href="{{ route('chat-user') }}" class="btn btn-primary text-white">
+            <i class="bi bi-chat-dots"></i>
+        </a>
+    </div>
     @include('layouts.frontend.footer')
 
 

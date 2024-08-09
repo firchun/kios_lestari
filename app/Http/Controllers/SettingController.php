@@ -25,6 +25,7 @@ class SettingController extends Controller
             $setting->alamat = $request->input('alamat');
             $setting->keterangan_kios = $request->input('keterangan_kios');
             $setting->google_maps = $request->input('google_maps');
+            $setting->point = $request->input('point');
             $setting->save();
         }
         return back();

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PengajuanReturn;
 use App\Models\Stok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Return_;
 use Yajra\DataTables\Facades\DataTables;
 
 class ReturnController extends Controller
@@ -18,21 +20,69 @@ class ReturnController extends Controller
     }
     public function getReturnDataTable()
     {
-        $Stoks = Stok::with(['produk'])->where('jenis', 'rusak')->orderByDesc('id');
+        $return = PengajuanReturn::with(['pesanan'])->orderByDesc('id');
 
-        return DataTables::of($Stoks)
-            ->addColumn('tanggal', function ($Stok) {
-                return $Stok->created_at->format('d F Y');
+        return DataTables::of($return)
+            ->addColumn('tanggal', function ($return) {
+                return $return->created_at->format('d F Y');
             })
-            ->addColumn('action', function ($Stok) {
-                return view('admin.return.components.actions', compact('Stok'));
+            ->addColumn('foto', function ($return) {
+                return '<a href="' . Storage::url($return->foto) . '" target="__blank"><img src="' . Storage::url($return->foto) . '" style="width:100px;height:100px;object-fit:cover;"></a>';
             })
-            ->addColumn('produk', function ($Stok) {
-                $foto = $Stok->produk->foto_produk == null ? asset('img/logo.png') : Storage::url($Stok->produk->foto_produk);
-                $nama = '<strong>' . $Stok->produk->nama_produk . '</strong><br><small class="text-mutted"> Satuan : ' . $Stok->produk->satuan_produk . '</small>';
-                return '<div class="d-flex"><div class="p-2"><img src="' . $foto . '" style="width:100px; height:auto;"></div><div class="p-2">' . $nama . '</div></div>';
+            ->addColumn('produk', function ($return) {
+                return $return->pesanan->produk->nama_produk;
             })
-            ->rawColumns(['action', 'produk', 'tanggal'])
+            ->addColumn('action', function ($return) {
+                if ($return->disetujui == 0) {
+                    return '<a href="' . route('return.setujui', $return->id) . '" class="btn btn-primary">Setujui</a>';
+                } else {
+                    if ($return->selesai == 0) {
+                        return '<a href="' . route('return.selesai', $return->id) . '" class="btn btn-success">Selesai</a>';
+                    } else {
+                        return 'Return selesai';
+                    }
+                }
+            })
+            ->rawColumns(['produk', 'tanggal', 'foto', 'action'])
             ->make(true);
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_pesanan' => 'required',
+            'jumlah' => 'required',
+            'keterangan' => 'required',
+            'foto' => 'required',
+        ]);
+        $returnData = [
+            'id_pesanan' =>  $request->input('id_pesanan'),
+            'jumlah' => $request->input('jumlah'),
+            'keterangan' => $request->input('keterangan'),
+        ];
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filePath = $file->store('foto_return', 'public'); // Simpan di disk 'public'
+            $returnData['foto'] = $filePath; // Update path file
+        }
+
+        PengajuanReturn::create($returnData);
+        session()->flash('success', 'berhasil mengirim pengajuan return produk');
+        return redirect()->back();
+    }
+    public function setujui($id)
+    {
+        $return = PengajuanReturn::find($id);
+        $return->disetujui = 1;
+        $return->save();
+        session()->flash('success', 'berhasil menyetujui pengajuan return produk');
+        return redirect()->back();
+    }
+    public function selesai($id)
+    {
+        $return = PengajuanReturn::find($id);
+        $return->selesai = 1;
+        $return->save();
+        session()->flash('success', 'berhasil menyelesaikan return produk');
+        return redirect()->back();
     }
 }

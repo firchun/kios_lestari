@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AreaPengantaran;
+use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\Produk;
 use App\Models\Stok;
@@ -74,7 +76,12 @@ class PesananController extends Controller
                 session()->flash('error', 'Jika pesanan ingin diantar, harap untuk mengisi form pengantaran');
                 return back()->withInput();
             }
+
+            $area = AreaPengantaran::find($request->input('id_area'));
+            $PesananData['biaya_pengantaran'] = $area->harga;
+            $PesananData['total_harga'] =  ($request->input('jumlah') * $produk->harga_produk) + $area->harga;
         }
+
         $cek_stok = Stok::getStok($request->input('id_produk'));
         if ($cek_stok < $request->input('jumlah')) {
             $PesananData['jenis'] = 'pre-order';
@@ -109,8 +116,12 @@ class PesananController extends Controller
 
                 session()->flash('success', 'Pesanan berhasil di buat');
             }
+            if ($request->has('id_keranjang')) {
+                $keranjang  = Keranjang::find($request->id_keranjang);
+                $keranjang->delete();
+            }
+            session()->flash('success', 'Pesanan berhasil di buat');
 
-            $message = 'Pesanan created successfully';
             return redirect()->to('/pesanan');
         }
     }

@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="p-2 border mb-4 shadow-sm" id="tablePengantaran" style="border-radius: 20px;">
+                <div class="p-2 border mb-4 shadow-sm" id="tablePengantaran" style="border-radius: 10px;">
 
                 </div>
 
@@ -37,13 +37,8 @@
                             <label>Bukti Pengantaran</label>
                             <input type="file" name="foto_bukti" class="form-control">
                         </div>
-                        <div class="mb-3">
-                            <label>Pengantaran Selesai</label>
-                            <select name="sampai" class="form-control">
-                                <option value="1">Sampai</option>
-                                <option value="0">Belum</option>
-                            </select>
-                        </div>
+                        <input type="hidden" name="sampai" value="1">
+
                         <button type="button" class="btn btn-primary" id="pengantaranSelesaiBtn">Pengantaran
                             Selesai</button>
                     </form>

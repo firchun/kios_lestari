@@ -36,6 +36,10 @@
                         data: 'pengantaran',
                         name: 'pengantaran'
                     },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
 
                     {
                         data: 'action',
@@ -55,7 +59,7 @@
                     type: 'GET',
                     url: '/pengantaran/pesanan/' + id,
                     success: function(response) {
-                        if (response.length === 0) {
+                        if ($.isEmptyObject(response)) {
                             // Jika respons kosong, tampilkan formPengantaran dan sembunyikan updatePengantaranSelesai
                             $('#formPengantaran').show();
                             $('#updatePengantaranSelesai').hide();
@@ -64,7 +68,7 @@
                                 // Jika sampai === 0, isi nilai id ke idPengantaran, sembunyikan formPengantaran, dan tampilkan updatePengantaranSelesai
                                 $('#idPengantaran').val(response.id);
                                 $('#formPengantaran').hide();
-                                p
+
                                 $('#updatePengantaranSelesai').show();
                             } else {
                                 // Jika sampai !== 0, sembunyikan kedua elemen
@@ -188,12 +192,14 @@
                 });
             });
             $('#pengantaranSelesaiBtn').click(function() {
-                var formData = $('#formUpdatePengantaran').serialize();
+                var formData = new FormData($('#formUpdatePengantaran')[0]);
 
                 $.ajax({
                     type: 'POST',
                     url: '/pengantaran/store',
                     data: formData,
+                    processData: false, // Prevent jQuery from automatically transforming the data into a query string
+                    contentType: false, // Prevent jQuery from setting Content-Type header
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -207,6 +213,7 @@
                     }
                 });
             });
+
         });
     </script>
 @endpush

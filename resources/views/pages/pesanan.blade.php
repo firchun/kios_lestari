@@ -18,22 +18,31 @@
             <h2 class="mb-3">{{ $title }}</h2>
             <div class="row">
                 <div class="col-lg-12">
+                    {{-- <small class="text-danger">Klik Nomor invoice untuk melihat detail invoice</small> --}}
                     <div class="cart-table">
                         <table>
                             <thead>
                                 <tr>
 
+                                    <th>No</th>
+                                    <th>Invoice</th>
                                     <th>Nama Produk</th>
                                     <th>Harga</th>
                                     <th>Jumlah</th>
-                                    <th>Pengantaran</th>
+                                    <th>Diantar</th>
                                     <th><i class="ti-info"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($pesanan as $item)
                                     <tr>
-
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td>
+                                            <a href=""
+                                                class="text-black font-weight-bold">{{ $item->no_invoice }}</a>
+                                        </td>
                                         <td class="cart-title first-row p-2">
                                             <h5><strong>{{ $item->produk->nama_produk }}</strong><br><small
                                                     class="text-primary">{{ $item->jenis }}</small>
@@ -44,7 +53,11 @@
                                             Harga : Rp {{ number_format($item->produk->harga_produk) }}
                                             <br>
                                             Total : <span class="text-danger">Rp
-                                                {{ number_format($item->total_harga) }}</span>
+                                                {{ number_format($item->total_harga) }}</span><br>
+                                            Pembayaran :
+                                            {!! App\Models\Pembayaran::where('id_pesanan', $item->id)->count() != 0
+                                                ? '<span class="text-success">Lunas</span>'
+                                                : '<span class="text-danger">Belum lunas</span>' !!}
                                         </td>
                                         <td class="qua-col first-row">
                                             <strong>{{ $item->jumlah }}</strong><br>
@@ -53,11 +66,7 @@
                                         <td class="text-left">
                                             <strong
                                                 class="text-{{ $item->diantar == 1 ? 'primary' : 'danger' }}">{{ $item->diantar == 1 ? 'Diantar' : 'Tidak' }}</strong><br>
-                                            @if ($item->diantar == 1)
-                                                <strong>Penerima :</strong> {{ $item->nama_penerima }}<br>
-                                                <strong>No. HP/WA :</strong> {{ $item->nomor_penerima }}<br>
-                                                <strong>Alamat :</strong> {{ $item->alamat_pengantaran }}
-                                            @endif
+
                                         </td>
                                         <td class="close-td first-row px-3">
                                             <a href="#" data-toggle="modal"
@@ -65,11 +74,30 @@
                                                 class="btn btn-sm btn-outline-primary mb-2 btn-block"
                                                 style="display:inline-block;border-radius:0px;">
                                                 Detail</a><br>
+
+                                            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->count() == 0)
+                                                <button type="button" class="btn btn-sm btn-outline-success btn-block"
+                                                    style="display:inline-block; border-radius:0px;" data-toggle="modal"
+                                                    data-target="#bayar-{{ $item->id }}">
+                                                    Bayar</button>
+                                            @endif
                                             @if ($item->status == 'pesanan diproses')
                                                 <a href="{{ route('pesanan.dibatalkan', $item->id) }}"
                                                     class="btn btn-sm btn-outline-danger btn-block"
                                                     style="display:inline-block; border-radius:0px;">
                                                     Batalkan</a>
+                                            @elseif($item->status == 'pesanan sampai di lokasi tujuan' || ($item->status = 'pesanan telah selesai'))
+                                                @if (App\Models\Rating::where('id_pesanan', $item->id)->count() == 0)
+                                                    <button type="button" class="btn btn-sm btn-warning btn-block"
+                                                        style="display:inline-block; border-radius:0px;" data-toggle="modal"
+                                                        data-target="#ulasan-{{ $item->id }}">
+                                                        Beri Ulasan</button>
+                                                @endif
+                                                <a href="#" data-toggle="modal"
+                                                    data-target="#return-{{ $item->id }}"
+                                                    class="btn btn-sm btn-danger mb-2 btn-block"
+                                                    style="display:inline-block;border-radius:0px;">
+                                                    Return</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -90,6 +118,126 @@
         </div>
         <!-- modal -->
         @foreach ($pesanan as $item)
+            @if (App\Models\Rating::where('id_pesanan', $item->id)->count() == 0)
+                <div class="modal fade" id="ulasan-{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Beri ulasan pada : ({{ $item->no_invoice }})
+                            </div>
+                            <form action="{{ route('rating.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" name="id_pesanan" value="{{ $item->id }}">
+                                    <input type="hidden" name="id_produk" value="{{ $item->id_produk }}">
+
+                                    <div class="mb-3">
+                                        <label>Rating (1-5)</label>
+                                        <input type="number" name="rating" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Ulasan anda pada produk ini</label>
+                                        <textarea name="ulasan" class="form-control" required></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-warning">Upload </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->count() == 0)
+                <div class="modal fade" id="bayar-{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Upload Bukti Pembayaran : ({{ $item->no_invoice }})
+                            </div>
+                            <form action="{{ route('pembayaran.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" name="id_pesanan" value="{{ $item->id }}">
+                                    <div class="mb-3">
+                                        <label>Jumlah Pembayaran (Rp)</label>
+                                        <input type="number" name="jumlah" class="form-control"
+                                            value="{{ $item->total_harga }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Foto bukti pembayaran</label>
+                                        <input type="file" name="foto" class="form-control" required>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-warning">Upload </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if ($item->status == 'pesanan sampai di lokasi tujuan' || ($item->status = 'pesanan telah selesai'))
+                <div class="modal fade" id="return-{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Pengajuan Return : {{ $item->produk->nama_produk }} ({{ $item->no_invoice }})
+                            </div>
+
+                            @php
+                                $return = App\Models\PengajuanReturn::where('id_pesanan', $item->id)
+                                    ->latest()
+                                    ->first();
+                            @endphp
+                            @if (!$return)
+                                <form action="{{ route('return.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id_pesanan" value="{{ $item->id }}">
+                                        <input type="hidden" name="jumlah" value="0">
+                                        <div class="mb-3">
+                                            <label>Foto bukti keruakan</label>
+                                            <input type="file" name="foto" class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Keterangan</label>
+                                            <textarea name="keterangan" class="form-control" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-warning">Ajukan </button>
+                                    </div>
+                                </form>
+                            @else
+                                <div class="modal-body">
+                                    @if ($return->disetujui == 1)
+                                        <div class="alert alert-primary  show" role="alert">
+                                            Status : Pengajuan telah disetujui
+                                        </div>
+                                    @else
+                                        <div class="alert alert-primary  show" role="alert">
+                                            Status : Menunggu persetujuan
+                                        </div>
+                                    @endif
+                                    <div class="mt-3 text-center">
+                                        <img src="{{ Storage::url($return->foto) }}" alt="return"
+                                            style="width: 150px; height:150px; object-fit:cover;">
+                                        <p>
+                                            Keterangan = {{ $return->keterangan }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="modal fade" id="detailPesanan-{{ $item->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -101,6 +249,27 @@
                             <div class="alert alert-primary  show" role="alert">
                                 Status : <strong>{{ $item->status }}</strong>
                             </div>
+                            @if (App\Models\Rating::where('id_pesanan', $item->id)->count() != 0)
+                                <div class="alert alert-warning  show" role="alert">
+                                    Terimakasih telah memberikan rating dan ulasan anda...<br>
+                                    <div class="d-flex  align-items-center my-2">
+                                        @php
+                                            $ulasan = App\Models\Rating::where('id_pesanan', $item->id)->first()
+                                                ->ulasan;
+                                            $rating = App\Models\Rating::where('id_pesanan', $item->id)->first()
+                                                ->rating;
+                                            $maxRating = 5;
+                                        @endphp
+
+                                        @for ($i = 1; $i <= $maxRating; $i++)
+                                            <i class="fa fa-star {{ $i <= $rating ? 'text-warning' : 'text-muted' }}"></i>
+                                        @endfor
+                                    </div>
+                                    <p>
+                                        Ulasan : " {{ $ulasan }} "
+                                    </p>
+                                </div>
+                            @endif
                             <table class="table table-sm">
                                 <tr>
                                     <td>Produk</td>
@@ -158,6 +327,37 @@
                                         <td>:</td>
                                         <td>{{ $item->alamat_pengantaran }}</td>
                                     </tr>
+                                </table>
+                            @endif
+                            @php
+                                $pengantaran = App\Models\pengantaran::where('id_pesanan', $item->id);
+                                $detail_pengantaran = $pengantaran->first();
+                            @endphp
+                            @if ($pengantaran->count() != 0)
+                                <strong>Keterangan Pengantar : </strong>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Sopir</td>
+                                        <td>:</td>
+                                        <td>{{ $detail_pengantaran->nama_pengantar }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keterangan</td>
+                                        <td>:</td>
+                                        <td>{{ $detail_pengantaran->keterangan }}</td>
+                                    </tr>
+                                    @if ($detail_pengantaran->sampai == 1)
+                                        <tr>
+                                            <td>Foto bukti pesanan sampai</td>
+                                            <td>:</td>
+                                            <td><a href="{{ Storage::url($detail_pengantaran->foto_bukti) }}"
+                                                    target="__blank">
+                                                    <img src="{{ Storage::url($detail_pengantaran->foto_bukti) }}"
+                                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 </table>
                             @endif
                         </div>

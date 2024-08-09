@@ -21,6 +21,10 @@
                         name: 'harga'
                     },
                     {
+                        data: 'diskon',
+                        name: 'diskon'
+                    },
+                    {
                         data: 'stok',
                         name: 'stok'
                     },

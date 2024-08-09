@@ -37,18 +37,29 @@
                                 <div
                                     class="catagory-name text-{{ App\Models\Stok::getStok($item->id) != 0 ? 'primary' : 'danger' }}">
                                     {{ App\Models\Stok::getStok($item->id) != 0 ? 'Tersedia' : 'Kosong' }}</div>
-                                <div class="d-flex justify-content-center mb-2">
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-mutted"></i>
-                                    <i class="fa fa-star text-mutted"></i>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    @php
+                                        $rating = App\Models\Rating::getRatingProduk($item->id);
+                                        $maxRating = 5;
+                                    @endphp
+                                    @for ($i = 1; $i <= $maxRating; $i++)
+                                        <i class="fa fa-star {{ $i <= $rating ? 'text-warning' : 'text-muted' }}"></i>
+                                    @endfor
                                 </div>
                                 <a href="#" style="font-weight: bold;">
                                     <h4>{{ $item->nama_produk }}</h4>
                                 </a>
                                 <div class="product-price">
-                                    Rp {{ number_format($item->harga_produk) }}
+                                    @if ($item->diskon == 1)
+                                        <del class="text-danger">Rp {{ number_format($item->harga_produk) }}</del><br>
+                                        @php
+                                            $diskon = ($item->harga_produk * $item->jumlah_diskon) / 100;
+                                            $harga_setelah_diskon = $item->harga_produk - $diskon;
+                                        @endphp
+                                        Rp {{ number_format($harga_setelah_diskon) }}
+                                    @else
+                                        Rp {{ number_format($item->harga_produk) }}
+                                    @endif
                                     <small class="text-dark">/{{ $item->satuan_produk }}</small>
                                     {{-- <span>$35.00</span> --}}
                                 </div>

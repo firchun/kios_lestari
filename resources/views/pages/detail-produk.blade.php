@@ -20,23 +20,32 @@
                     alt="">
             </div>
             <div class="col-lg-8 col-md-6">
-                <h2>{{ $produk->nama_produk }}</h2>
+                <h2 class="font-weight-bold">{{ $produk->nama_produk }}</h2>
                 <div class="row my-2">
                     <div class="col-4 d-flex">
-                        <strong class="mr-3 text-danger">4,5</strong>
+                        <strong class="mr-3 text-warning font-weight-bold">
+                            {{ App\Models\Rating::getRatingProduk($produk->id) }}
+                        </strong>
                         <div class="d-flex justify-content-center align-items-center">
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-mutted"></i>
-                            <i class="fa fa-star text-mutted"></i>
+                            @php
+                                $rating = App\Models\Rating::getRatingProduk($produk->id);
+                                $maxRating = 5;
+                            @endphp
+                            @for ($i = 1; $i <= $maxRating; $i++)
+                                <i class="fa fa-star {{ $i <= $rating ? 'text-warning' : 'text-muted' }}"></i>
+                            @endfor
                         </div>
                     </div>
+
                     <div class="col-4">
-                        <strong class="text-danger">0</strong> Penilaian
+                        <strong
+                            class="text-danger  font-weight-bold">{{ App\Models\Rating::getCountRatingProduk($produk->id) }}</strong>
+                        Penilaian
                     </div>
                     <div class="col-4">
-                        <strong class="text-danger">0</strong> <small>{{ $produk->satuan_produk }} </small> Terjual
+                        <strong
+                            class="text-danger  font-weight-bold">{{ App\Models\Pesanan::getCountProduk($produk->id) }}</strong>
+                        <small>{{ $produk->satuan_produk }} </small> Terjual
                     </div>
                 </div>
                 <hr>
@@ -65,7 +74,11 @@
                 @guest
                     <a href="{{ route('login') }}" class="btn primary-btn">Login Sekarang </a>
                 @else
-                    <button type="submit" class=" btn primary-btn" data-toggle="modal" data-target="#modalPemesanan">Pesan
+                    <button type="button" class=" btn btn-success btn-lg" data-toggle="modal"
+                        data-target="#modalKeranjang">Masukkan
+                        Keranjang</button>
+                    <button type="button" class=" btn btn-warning btn-lg" data-toggle="modal"
+                        data-target="#modalPemesanan">Pesan
                         Sekarang</button>
                 @endguest
             </div>
@@ -73,9 +86,34 @@
         <hr>
 
         <div class="mb-3 border p-3">
-            <strong>Rating dan Ulasan pelanggan</strong>
+            @php
+                $ulasan = App\Models\Rating::with(['pesanan', 'produk'])->where('id_produk', $produk->id);
+            @endphp
+            <strong>Rating dan Ulasan pelanggan <span class="badge badge-primary">{{ $ulasan->count() }}
+                    Ulasan</span></strong>
             <hr>
-            <p class="text-muted">Belum ada rating dan ulasan dari pelanggan</p>
+            @if ($ulasan->count() != 0)
+                @foreach ($ulasan->get() as $item)
+                    <div class="p-2 border">
+                        <strong>{{ $item->pesanan->user->name }} ({{ $item->rating }})</strong><br>
+                        <div class="d-flex  align-items-center mb-2">
+                            @php
+                                $rating = $item->rating;
+                                $maxRating = 5;
+                            @endphp
+
+                            @for ($i = 1; $i <= $maxRating; $i++)
+                                <i class="fa fa-star {{ $i <= $rating ? 'text-warning' : 'text-muted' }}"></i>
+                            @endfor
+                        </div>
+                        <p>
+                            Ulasan : " {{ $item->ulasan }} "
+                        </p>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-muted">Belum ada rating dan ulasan dari pelanggan</p>
+            @endif
         </div>
     </section>
     <!-- modal -->
@@ -101,7 +139,7 @@
                             <div class="col">
                                 <div class="mb-3 ">
                                     <label> Pengantaran : &nbsp; &nbsp;</label>
-                                    <select class="form-control" name="diantar">
+                                    <select class="form-control" name="diantar" id="diantarSelect">
                                         <option value="0" selected>Tidak</option>
                                         <option value="1">Diantar</option>
                                     </select>
@@ -109,23 +147,34 @@
                             </div>
                         </div>
                         <hr>
-                        <strong>Detail Pengantaran (diisi jika diantar)</strong>
-                        <div class="m-2 p-2 border bg-light" style="border-radius: 20px;">
-                            <div class="mb-3">
-                                <label> Nama Penerima</label>
-                                <input type="text" class="form-control" name="nama_penerima" placeholder="Nama Penerima">
+                        <div class="" id="pengantaranForm">
+                            <strong>Detail Pengantaran </strong>
+                            <div class="m-2 p-2 border bg-light" style="border-radius: 20px;">
+                                <div class="mb-3">
+                                    <label> Nama Penerima</label>
+                                    <input type="text" class="form-control" name="nama_penerima"
+                                        placeholder="Nama Penerima">
+                                </div>
+                                <div class="mb-3">
+                                    <label> Nomor HP/WA Penerima (gunakan awalan +62)</label>
+                                    <input type="text" class="form-control" name="nomor_penerima"
+                                        placeholder="+628xxxxxxxxxx">
+                                </div>
+                                <div class="mb-3">
+                                    <label>Pilih area pengantaran</label>
+                                    <select class="form-control" name="id_area">
+                                        @foreach (App\Models\AreaPengantaran::all() as $item)
+                                            <option>{{ $item->nama }} - Rp {{ number_format($item->harga) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label> Alamat Pengantaran</label>
+                                    <textarea class="form-control" name="alamat_pengantaran">-</textarea>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label> Nomor HP/WA Penerima (gunakan awalan +62)</label>
-                                <input type="text" class="form-control" name="nomor_penerima"
-                                    placeholder="+628xxxxxxxxxx">
-                            </div>
-                            <div class="mb-3">
-                                <label> Alamat Pengantaran</label>
-                                <textarea class="form-control" name="alamat_pengantaran">-</textarea>
-                            </div>
+                            <hr>
                         </div>
-                        <hr>
                         <div class="text-center">
                             <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Batal</button>
                             <button type="submit" class="btn primary-btn">Pesan Sekarang</button>
@@ -135,4 +184,55 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalKeranjang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <form action="{{ route('keranjang.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id_produk" value="{{ $produk->id }}">
+                        <strong>Masukkan keranjang : {{ $produk->nama_produk }}</strong>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label> Jumlah Dipesan : &nbsp; &nbsp;</label>
+                                    <input type="number" class="form-control" name="jumlah" value="1">
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn primary-btn">Masukkan Keranjang</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const diantarSelect = document.getElementById('diantarSelect');
+            const pengantaranForm = document.getElementById('pengantaranForm');
+
+            function togglePengantaranForm() {
+                if (diantarSelect.value === '1') {
+                    pengantaranForm.style.display = 'block';
+                } else {
+                    pengantaranForm.style.display = 'none';
+                }
+            }
+
+            // Initial check on page load
+            togglePengantaranForm();
+
+            // Add event listener to dropdown
+            diantarSelect.addEventListener('change', togglePengantaranForm);
+        });
+    </script>
 @endsection

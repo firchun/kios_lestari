@@ -24,8 +24,10 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
+                            <th>Foto</th>
                             <th>Produk</th>
-                            <th>Jumlah</th>
+                            <th>Invoice</th>
+                            <th>action</th>
                         </tr>
                     </thead>
 
@@ -33,8 +35,10 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
+                            <th>Foto</th>
                             <th>Produk</th>
-                            <th>Jumlah</th>
+                            <th>invoice</th>
+                            <th>action</th>
 
                         </tr>
                     </tfoot>

@@ -31,6 +31,7 @@
                             <th>ID</th>
                             <th>Nama Produk</th>
                             <th>Harga Produk</th>
+                            <th>Diskon</th>
                             <th>Stok</th>
                             <th>Action</th>
                         </tr>
@@ -41,6 +42,7 @@
                             <th>ID</th>
                             <th>Nama Produk</th>
                             <th>Harga Produk</th>
+                            <th>Diskon</th>
                             <th>Stok</th>
                             <th>Action</th>
                         </tr>

@@ -33,7 +33,24 @@ class ProdukController extends Controller
                 return $namaProduk;
             })
             ->addColumn('harga', function ($Produk) {
-                return 'Rp ' . number_format($Produk->harga_produk);
+                $harga_produk = $Produk->harga_produk;
+
+                $jumlah_diskon = $Produk->jumlah_diskon;
+                $diskon = 0;
+                $harga_setelah_diskon = $harga_produk;
+                if ($jumlah_diskon > 0) {
+                    $diskon = ($harga_produk * $jumlah_diskon) / 100;
+                    $harga_setelah_diskon = $harga_produk - $diskon;
+                }
+
+                $data = number_format($harga_produk) . '<br><span class="text-danger font-weight-bold"> Rp ' . number_format($harga_setelah_diskon) . '</span>';
+                return $Produk->diskon == 1 ? $data : number_format($harga_produk);
+            })
+            ->addColumn('diskon', function ($Produk) {
+
+                $tombol = '<button type="button" class="btn btn-primary btn-sm mt-2">Update</button>';
+                $diskon = $Produk->diskon == 1 ? '<span class="badge badge-danger">Diskon ' . $Produk->jumlah_diskon . '%</span>' : '<span class="badge badge-warning">Tidak</span>';
+                return '<div class="text-center">' . $diskon . '<br>' . $tombol . '</div>';
             })
             ->addColumn('stok', function ($Produk) {
                 $jumlah = Stok::getStok($Produk->id);
@@ -42,7 +59,7 @@ class ProdukController extends Controller
                 $stok =  '<div class="d-flex align-items-center"><span class="' . $color . ' h2">' . Stok::getStok($Produk->id) . '</span> <small>' . $Produk->satuan_produk . '</small></div>';
                 return  $stok . '<div class="btn-group">' . $tambah . '</div>';
             })
-            ->rawColumns(['action', 'nama', 'harga', 'stok'])
+            ->rawColumns(['action', 'nama', 'harga', 'stok', 'diskon'])
             ->make(true);
     }
     public function store(Request $request)
