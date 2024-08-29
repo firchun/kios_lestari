@@ -16,9 +16,15 @@ class StokController extends Controller
         ];
         return view('admin.stok.index', $data);
     }
-    public function getStoksDataTable()
+    public function getStoksDataTable(Request $request)
     {
         $Stoks = Stok::with(['produk'])->orderByDesc('id');
+        if ($request->has('jenis') && $request->input('jenis') != '') {
+            $Stoks->where('jenis', $request->input('jenis'));
+        }
+        if ($request->has('id_produk') && $request->input('id_produk') != '') {
+            $Stoks->where('id_produk', $request->input('id_produk'));
+        }
 
         return DataTables::of($Stoks)
             ->addColumn('tanggal', function ($Stok) {
@@ -27,12 +33,12 @@ class StokController extends Controller
             ->addColumn('action', function ($Stok) {
                 return view('admin.stok.components.actions', compact('Stok'));
             })
-            ->addColumn('produk', function ($Stok) {
+            ->addColumn('produk_txt', function ($Stok) {
                 $foto = $Stok->produk->foto_produk == null ? asset('img/logo.png') : Storage::url($Stok->produk->foto_produk);
                 $nama = '<strong>' . $Stok->produk->nama_produk . '</strong><br><small class="text-mutted"> Satuan : ' . $Stok->produk->satuan_produk . '</small>';
                 return '<div class="d-flex"><div class="p-2"><img src="' . $foto . '" style="width:100px; height:auto;"></div><div class="p-2">' . $nama . '</div></div>';
             })
-            ->rawColumns(['action', 'produk', 'tanggal'])
+            ->rawColumns(['action', 'produk_txt', 'tanggal'])
             ->make(true);
     }
     public function store(Request $request)

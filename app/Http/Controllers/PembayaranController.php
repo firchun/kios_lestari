@@ -36,10 +36,18 @@ class PembayaranController extends Controller
         session()->flash('success', 'Berhasil upload bukti pembayaran');
         return redirect()->back();
     }
-    public function getPembayaranDataTable()
+    public function getPembayaranDataTable(Request $request)
     {
         $pembayaran = Pembayaran::with(['pesanan'])->orderByDesc('id');
-
+        if ($request->has('id_produk') && $request->input('id_produk') != '') {
+            $idProduk = $request->input('id_produk');
+            $pembayaran->whereHas('pesanan', function ($query) use ($idProduk) {
+                $query->where('id_produk', $idProduk);
+            });
+        }
+        if ($request->has('terverifikasi') && $request->input('terverifikasi') != '') {
+            $pembayaran->where('terverifikasi', $request->input('terverifikasi'));
+        }
         return DataTables::of($pembayaran)
             ->addColumn('foto', function ($pembayaran) {
 

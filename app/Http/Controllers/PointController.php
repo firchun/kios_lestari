@@ -25,16 +25,22 @@ class PointController extends Controller
         return DataTables::of($users)
 
             ->addColumn('action', function ($user) {
-                return '';
+                return '<button type="button" onclick="change(' . $user->id . ')" class="btn btn-warning">Gunakan</button>';
             })
             ->addColumn('point', function ($user) {
                 $jumlah = Pesanan::where('id_user', $user->id)->count();
                 $reward = Setting::first()->point;
                 return '<span class="font-weight-bold h5 text-danger">' . number_format($jumlah * $reward) . '</span> Point';
             })
+            ->addColumn('saldo', function ($user) {
+                $jumlah = Pesanan::where('id_user', $user->id)->count();
+                $reward = Setting::first()->point;
+                $saldo = Setting::first()->saldo_point;
+                return '<span class="font-weight-bold h5 text-danger">Rp ' . number_format(($jumlah * $reward) * $saldo) . '</span>';
+            })
 
 
-            ->rawColumns(['action', 'point'])
+            ->rawColumns(['action', 'point', 'saldo'])
             ->make(true);
     }
 }

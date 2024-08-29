@@ -25,6 +25,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Point</th>
+                            <th>Saldo</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -35,10 +36,35 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Point</th>
+                            <th>Saldo</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+    </div>
+    {{-- modal --}}
+    <div class="modal fade" id="change" tabindex="-1" aria-labelledby="customersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">Gunakan point : <span id="namaUser"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                </div>
+                <form id="">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Jumlah Point</label>
+                            <input type="number" class="form-control" name="jumlah" value="1" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -55,7 +81,6 @@
                         data: 'id',
                         name: 'id'
                     },
-
                     {
                         data: 'name',
                         name: 'name'
@@ -68,6 +93,10 @@
                         data: 'point',
                         name: 'point'
                     },
+                    {
+                        data: 'saldo',
+                        name: 'saldo'
+                    },
 
                     {
                         data: 'action',
@@ -79,5 +108,18 @@
                 $('#datatable-users').DataTable().ajax.reload();
             });
         });
+        window.change = function(id) {
+            $('#change').modal('show');
+            $.ajax({
+                type: 'GET',
+                url: '/users/edit/' + id,
+                success: function(response) {
+                    $('#namaUser').text(response.name);
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan: ' + xhr.responseText);
+                }
+            });
+        };
     </script>
 @endpush

@@ -133,7 +133,8 @@
                                             <label>Pilih area pengantaran</label>
                                             <select class="form-control" name="id_area">
                                                 @foreach (App\Models\AreaPengantaran::all() as $item)
-                                                    <option>{{ $item->nama }} - Rp {{ number_format($item->harga) }}
+                                                    <option value="{{ $item->id }}">{{ $item->nama }} - Rp
+                                                        {{ number_format($item->harga) }}
                                                     </option>
                                                 @endforeach
                                             </select>

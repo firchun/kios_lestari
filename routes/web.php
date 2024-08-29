@@ -3,6 +3,7 @@
 use App\Http\Controllers\AreaPengantaranController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengantaranController;
 use App\Http\Controllers\PesananController;
@@ -70,6 +71,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         $user = User::find(Auth::id());
         $setting = Setting::getSetting();
         $pesanan = Pesanan::with(['produk', 'user'])->where('id_user', Auth::id())->paginate(10);
+        // dd($pesanan);
         return view('pages.pesanan', ['title' => $title, 'user' => $user, 'setting' => $setting, 'pesanan' => $pesanan]);
     });
     Route::get('/keranjang', function () {
@@ -116,7 +118,7 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     Route::get('/point-datatable', [PointController::class, 'getPointDataTable']);
     //pesanan managemen
     Route::get('/pemesanan', [PesananController::class, 'index'])->name('pemesanan');
-    Route::get('/pesanan-datatable', [PesananController::class, 'getPesananDataTable']);
+    // Route::get('/pesanan-datatable', [PesananController::class, 'getPesananDataTable']);
     //return managemen
     Route::get('/return', [ReturnController::class, 'index'])->name('return');
     Route::get('/return/setujui/{id}', [ReturnController::class, 'setujui'])->name('return.setujui');
@@ -125,18 +127,18 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     //pembayaran managemen
     Route::get('/pembayaran',  [PembayaranController::class, 'index'])->name('pembayaran');
     Route::get('/pembayaran/verifikasi/{id}',  [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
-    Route::get('/pembayaran-datatable', [PembayaranController::class, 'getpembayaranDataTable']);
+    // Route::get('/pembayaran-datatable', [PembayaranController::class, 'getpembayaranDataTable']);
     //pengantaran managemen
     Route::get('/pengantaran',  [PengantaranController::class, 'index'])->name('pengantaran');
     Route::post('/pengantaran/store',  [PengantaranController::class, 'store'])->name('pengantaran.store');
     Route::get('/pengantaran/pesanan/{id}',  [PengantaranController::class, 'pesanan'])->name('pengantaran.pesanan');
-    Route::get('/pengantaran-datatable', [PengantaranController::class, 'getPengantaranDataTable']);
+    // Route::get('/pengantaran-datatable', [PengantaranController::class, 'getPengantaranDataTable']);
     //stok managemen
     Route::get('/stok', [StokController::class, 'index'])->name('stok');
     Route::post('/stok/store',  [StokController::class, 'store'])->name('stok.store');
     Route::get('/stok/edit/{id}',  [StokController::class, 'edit'])->name('stok.edit');
     Route::delete('/stok/delete/{id}',  [StokController::class, 'destroy'])->name('stok.delete');
-    Route::get('/stok-datatable', [StokController::class, 'getStoksDataTable']);
+    // Route::get('/stok-datatable', [StokController::class, 'getStoksDataTable']);
     //area managemen
     Route::get('/area', [AreaPengantaranController::class, 'index'])->name('area');
     Route::post('/area/store',  [AreaPengantaranController::class, 'store'])->name('area.store');
@@ -155,4 +157,16 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     Route::get('/users/edit/{id}',  [UserController::class, 'edit'])->name('users.edit');
     Route::delete('/users/delete/{id}',  [UserController::class, 'destroy'])->name('users.delete');
     Route::get('/users-datatable', [UserController::class, 'getUsersDataTable']);
+});
+Route::middleware(['auth:web', 'role:Admin,Owner', 'verified'])->group(function () {
+    //data
+    Route::get('/pengantaran-datatable', [PengantaranController::class, 'getPengantaranDataTable']);
+    Route::get('/stok-datatable', [StokController::class, 'getStoksDataTable']);
+    Route::get('/pembayaran-datatable', [PembayaranController::class, 'getpembayaranDataTable']);
+    Route::get('/pesanan-datatable', [PesananController::class, 'getPesananDataTable']);
+    //laporan
+    Route::get('/laporan/pengantaran', [LaporanController::class, 'pengantaran'])->name('laporan.pengantaran');
+    Route::get('/laporan/keuangan', [LaporanController::class, 'keuangan'])->name('laporan.keuangan');
+    Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
+    Route::get('/laporan/suplai', [LaporanController::class, 'suplai'])->name('laporan.suplai');
 });

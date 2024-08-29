@@ -108,73 +108,94 @@
                         <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
                     </a>
                 </li>
+                @if (Auth::user()->role == 'Admin')
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <span class="micon bi bi-folder"></span><span class="mtext">Master Data</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ route('produk') }}"
+                                    class="{{ request()->is('produk') ? 'active' : '' }}">Produk</a></li>
+                            <li><a href="{{ route('area') }}" class="{{ request()->is('area') ? 'active' : '' }}">Area
+                                    pengantaran </a>
+                            </li>
 
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <span class="micon bi bi-folder"></span><span class="mtext">Transaksi</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ route('pemesanan') }}"
+                                    class="{{ request()->is('pemesanan') ? 'active' : '' }}">Pemesanan</a>
+                            </li>
+                            <li><a href="{{ route('pembayaran') }}"
+                                    class="{{ request()->is('pembayaran') ? 'active' : '' }}">Pembayaran</a>
+                            </li>
+                            <li><a href="{{ route('return') }}"
+                                    class="{{ request()->is('return') ? 'active' : '' }}">Return Barang</a>
+                            </li>
+                            <li><a href="{{ route('pengantaran') }}"
+                                    class="{{ request()->is('pengantaran') ? 'active' : '' }}"> Status Pengantaran</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <span class="micon bi bi-people"></span><span class="mtext">Pengguna</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ route('users') }}"
+                                    class="{{ request()->is('users') ? 'active' : '' }}">Pengguna</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('point') }}"
+                            class="dropdown-toggle no-arrow {{ request()->is('point') ? 'active' : '' }}">
+                            <span class="micon bi bi-star"></span><span class="mtext">Point Pelanggan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="dropdown-toggle no-arrow ">
+                            <span class="micon bi bi-telephone"></span><span class="mtext">Chat Pelanggan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/stok') }}"
+                            class="dropdown-toggle no-arrow {{ request()->is('stok*') ? 'active' : '' }}">
+                            <span class="micon bi bi-folder"></span><span class="mtext">Riwayat Stok</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/setting') }}"
+                            class="dropdown-toggle no-arrow {{ request()->is('setting*') ? 'active' : '' }}">
+                            <span class="micon bi bi-gear"></span><span class="mtext">Pengaturan</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-folder"></span><span class="mtext">Master Data</span>
+                        <span class="micon bi bi-folder"></span><span class="mtext">Laporan</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="{{ route('produk') }}"
-                                class="{{ request()->is('produk') ? 'active' : '' }}">Produk</a></li>
-                        <li><a href="{{ route('area') }}" class="{{ request()->is('area') ? 'active' : '' }}">Area
-                                pengantaran </a>
+                        <li><a href="{{ route('laporan.penjualan') }}"
+                                class="{{ request()->is('laporan/penjualan') ? 'active' : '' }}">Penjualan</a>
+                        </li>
+                        <li><a href="{{ route('laporan.keuangan') }}"
+                                class="{{ request()->is('laporan/keuangan') ? 'active' : '' }}">keuangan</a>
+                        </li>
+                        <li><a href="{{ route('laporan.pengantaran') }}"
+                                class="{{ request()->is('laporan/pengantaran') ? 'active' : '' }}">Pengantaran</a>
+                        </li>
+                        <li><a href="{{ route('laporan.suplai') }}"
+                                class="{{ request()->is('laporan/suplai') ? 'active' : '' }}"> Suplai Stok</a>
                         </li>
 
                     </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-folder"></span><span class="mtext">Transaksi</span>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="{{ route('pemesanan') }}"
-                                class="{{ request()->is('pemesanan') ? 'active' : '' }}">Pemesanan</a>
-                        </li>
-                        <li><a href="{{ route('pembayaran') }}"
-                                class="{{ request()->is('pembayaran') ? 'active' : '' }}">Pembayaran</a>
-                        </li>
-                        <li><a href="{{ route('return') }}"
-                                class="{{ request()->is('return') ? 'active' : '' }}">Return Barang</a>
-                        </li>
-                        <li><a href="{{ route('pengantaran') }}"
-                                class="{{ request()->is('pengantaran') ? 'active' : '' }}"> Status Pengantaran</a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-people"></span><span class="mtext">Pengguna</span>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="{{ route('users') }}"
-                                class="{{ request()->is('users') ? 'active' : '' }}">Pengguna</a></li>
-
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="{{ route('point') }}"
-                        class="dropdown-toggle no-arrow {{ request()->is('point') ? 'active' : '' }}">
-                        <span class="micon bi bi-star"></span><span class="mtext">Point Pelanggan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="dropdown-toggle no-arrow ">
-                        <span class="micon bi bi-telephone"></span><span class="mtext">Chat Pelanggan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('/stok') }}"
-                        class="dropdown-toggle no-arrow {{ request()->is('stok*') ? 'active' : '' }}">
-                        <span class="micon bi bi-folder"></span><span class="mtext">Riwayat Stok</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('/setting') }}"
-                        class="dropdown-toggle no-arrow {{ request()->is('setting*') ? 'active' : '' }}">
-                        <span class="micon bi bi-gear"></span><span class="mtext">Pengaturan</span>
-                    </a>
                 </li>
                 <li>
                     <a href="{{ url('/profile') }}"

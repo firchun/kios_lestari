@@ -8,6 +8,7 @@ use App\Models\Pesanan;
 use App\Models\Produk;
 use App\Models\Stok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class PesananController extends Controller
@@ -19,9 +20,18 @@ class PesananController extends Controller
         ];
         return view('admin.pesanan.index', $data);
     }
-    public function getPesananDataTable()
+    public function getPesananDataTable(Request $request)
     {
         $pesanan = Pesanan::with('produk', 'user')->orderByDesc('id');
+        if ($request->has('diantar') && $request->input('diantar') != '') {
+            $pesanan->where('diantar', $request->input('diantar'));
+        }
+        if ($request->has('jenis') && $request->input('jenis') != '') {
+            $pesanan->where('jenis', $request->input('jenis'));
+        }
+        if ($request->has('id_produk') && $request->input('id_produk') != '') {
+            $pesanan->where('id_produk', $request->input('id_produk'));
+        }
 
         return DataTables::of($pesanan)
             ->addColumn('action', function ($pesanan) {
@@ -30,7 +40,7 @@ class PesananController extends Controller
             ->addColumn('tanggal', function ($pesanan) {
                 return $pesanan->created_at->format('d F Y');
             })
-            ->addColumn('produk', function ($pesanan) {
+            ->addColumn('produk_txt', function ($pesanan) {
                 return '<strong>' . $pesanan->produk->nama_produk . '</strong><br>Rp ' . number_format($pesanan->produk->harga_produk) . ' /' . $pesanan->produk->satuan_produk;
             })
             ->addColumn('jumlah', function ($pesanan) {
@@ -45,7 +55,7 @@ class PesananController extends Controller
             ->addColumn('invoice', function ($pesanan) {
                 return $pesanan->jenis == 'order' ?  $pesanan->no_invoice . '<br><span class="badge badge-primary">Order</span>'  : $pesanan->no_invoice . '<br><span class="badge badge-danger">Pre-order</span>';
             })
-            ->rawColumns(['action', 'produk', 'jumlah', 'tanggal', 'tagihan', 'pengantaran', 'invoice'])
+            ->rawColumns(['action', 'produk_txt', 'jumlah', 'tanggal', 'tagihan', 'pengantaran', 'invoice'])
             ->make(true);
     }
     public function store(Request $request)
@@ -78,6 +88,7 @@ class PesananController extends Controller
             }
 
             $area = AreaPengantaran::find($request->input('id_area'));
+            // dd($request->input('id_area'));
             $PesananData['biaya_pengantaran'] = $area->harga;
             $PesananData['total_harga'] =  ($request->input('jumlah') * $produk->harga_produk) + $area->harga;
         }
@@ -120,9 +131,15 @@ class PesananController extends Controller
                 $keranjang  = Keranjang::find($request->id_keranjang);
                 $keranjang->delete();
             }
-            session()->flash('success', 'Pesanan berhasil di buat');
 
-            return redirect()->to('/pesanan');
+            if (Auth::user()->role == 'User') {
+
+                session()->flash('success', 'Pesanan berhasil di buat');
+                return redirect()->to('/pesanan');
+            } else {
+                session()->flash('success', 'Pesanan berhasil di buat');
+                return back();
+            }
         }
     }
     public function dibatalkan($id)

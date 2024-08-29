@@ -17,8 +17,8 @@
                     },
 
                     {
-                        data: 'produk',
-                        name: 'produk'
+                        data: 'produk_txt',
+                        name: 'produk_txt'
                     },
                     {
                         data: 'jenis',

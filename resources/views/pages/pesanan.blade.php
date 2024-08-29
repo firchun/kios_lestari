@@ -181,7 +181,7 @@
                     </div>
                 </div>
             @endif
-            @if ($item->status == 'pesanan sampai di lokasi tujuan' || ($item->status = 'pesanan telah selesai'))
+            @if ($item->status == 'pesanan sampai di lokasi tujuan' || $item->status == 'pesanan telah selesai')
                 <div class="modal fade" id="return-{{ $item->id }}" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -238,6 +238,9 @@
                     </div>
                 </div>
             @endif
+        @endforeach
+        {{-- {{ dd($pesanan) }} --}}
+        @foreach ($pesanan as $item)
             <div class="modal fade" id="detailPesanan-{{ $item->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -247,7 +250,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-primary  show" role="alert">
-                                Status : <strong>{{ $item->status }}</strong>
+                                Status : <strong> {{ $item->status }}</strong>
                             </div>
                             @if (App\Models\Rating::where('id_pesanan', $item->id)->count() != 0)
                                 <div class="alert alert-warning  show" role="alert">
@@ -327,10 +330,15 @@
                                         <td>:</td>
                                         <td>{{ $item->alamat_pengantaran }}</td>
                                     </tr>
+                                    <tr>
+                                        <td>Biaya Pengantaran</td>
+                                        <td>:</td>
+                                        <td>Rp {{ number_format($item->biaya_pengantaran) }}</td>
+                                    </tr>
                                 </table>
                             @endif
                             @php
-                                $pengantaran = App\Models\pengantaran::where('id_pesanan', $item->id);
+                                $pengantaran = App\Models\Pengantaran::where('id_pesanan', $item->id);
                                 $detail_pengantaran = $pengantaran->first();
                             @endphp
                             @if ($pengantaran->count() != 0)

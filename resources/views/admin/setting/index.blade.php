@@ -13,6 +13,10 @@
                     <input type="number" name="point" class="form-control" value="{{ $setting->point }}">
                 </div>
                 <div class="mb-3">
+                    <label>Saldo point dalam 1 kali pemesanan</label>
+                    <input type="number" name="saldo_point" class="form-control" value="{{ $setting->saldo_point }}">
+                </div>
+                <div class="mb-3">
                     <label>Nomor HP/WA Aktif</label>
                     <input name="no_hp" class="form-control" value="{{ $setting->no_hp }}">
                 </div>

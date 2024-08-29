@@ -70,10 +70,18 @@ class PengantaranController extends Controller
 
         return response()->json($Pengantaran);
     }
-    public function getPengantaranDataTable()
+    public function getPengantaranDataTable(Request $request)
     {
-        $pengantaran = Pengantaran::with('pesanan')->orderByDesc('id');
-
+        $pengantaran = Pengantaran::with(['pesanan.produk'])->orderByDesc('id');
+        if ($request->has('sampai') && $request->input('sampai') != '') {
+            $pengantaran->where('sampai', $request->input('sampai'));
+        }
+        if ($request->has('id_produk') && $request->input('id_produk') != '') {
+            $idProduk = $request->input('id_produk');
+            $pengantaran->whereHas('pesanan', function ($query) use ($idProduk) {
+                $query->where('id_produk', $idProduk);
+            });
+        }
         return DataTables::of($pengantaran)
             ->addColumn('bukti', function ($pengantaran) {
                 if ($pengantaran->sampai == 1) {
