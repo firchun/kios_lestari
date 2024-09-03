@@ -1,4 +1,45 @@
 <!-- Modal for Create and Edit -->
+<div class="modal fade" id="updatepesanan" tabindex="-1" aria-labelledby="customersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">Update Pesanan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadingIndicatorUpdatePesanan" style="display: none;">
+                    <div class="text-center">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <form id="formUpdatePembayaran">
+                    <div class="mb-3">
+                        <label>Update Pembayaran</label>
+
+                    </div>
+                </form>
+                <form action="{{ route('pesanan.update') }}" id="formUpdatePesanan" method="POST">
+                    @csrf
+                    <input type="hidden" name="id" id="idPesanan">
+
+                    <div class="mb-3">
+                        <label>Status Pesanan</label>
+                        <select class="form-control" name="status" id="selectStatus">
+                            <option value="pesanan telah selesai">pesanan telah selesai</option>
+                            <option value="menunggu barang tersedia">menunggu barang tersedia</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Update Pesanan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="pengantaran" tabindex="-1" aria-labelledby="customersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -16,7 +57,7 @@
                 <!-- Form for Create and Edit -->
                 <div id="formPengantaran">
                     <form id="createPengantaran">
-                        <input type="hidden" id="idPesanan" name="id_pesanan">
+                        <input type="hidden" id="idPesanan2" name="id_pesanan">
                         <div class="mb-3">
                             <label>Nama Pengantar / Sopir</label>
                             <input type="text" name="nama_pengantar" class="form-control"

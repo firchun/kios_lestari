@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengantaran;
 use App\Models\Pesanan;
+use App\Models\Stok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -51,9 +52,31 @@ class PengantaranController extends Controller
             $message = 'Pengantaran updated successfully';
         } else {
             Pengantaran::create($pengantaranData);
+
             $Pesanan = Pesanan::find($request->input('id_pesanan'));
             $Pesanan->status = 'pesanan dalam pengantaran';
             $Pesanan->save();
+
+            $check_stok = Stok::getStok($Pesanan->id_produk);
+            if ($check_stok < $Pesanan->jumlah && $Pesanan->jenis == 'pre-order' && $request->input('status') == 'pesanan telah selesai') {
+                $jumlah_dipesan = $Pesanan->jumlah;
+                $stok_tersedia = $check_stok;
+                $stok_dibutuhkan = $jumlah_dipesan - $stok_tersedia;
+
+                //tambahkan stok baru sesuai kebutuhan
+                $stok = new Stok();
+                $stok->id_produk = $Pesanan->id_produk;
+                $stok->jenis = 'masuk';
+                $stok->jumlah = $stok_dibutuhkan;
+                $stok->save();
+
+                //tambahkan stok penjualan sesaui pesanan
+                $stok = new Stok();
+                $stok->id_produk = $Pesanan->id_produk;
+                $stok->jenis = 'penjualan';
+                $stok->jumlah = $Pesanan->jumlah;
+                $stok->save();
+            }
 
             $message = 'Pengantaran created successfully';
         }

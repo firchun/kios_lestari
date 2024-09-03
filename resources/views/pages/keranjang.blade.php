@@ -40,7 +40,18 @@
                                             <small>{{ $item->status }}</small>
                                         </td>
                                         <td class="text-left">
-                                            Harga : Rp {{ number_format($item->produk->harga_produk) }}
+                                            @if ($item->produk->diskon == 1)
+                                                @php
+                                                    $diskon =
+                                                        ($item->produk->harga_produk * $item->produk->jumlah_diskon) /
+                                                        100;
+                                                    $harga_setelah_diskon = $item->produk->harga_produk - $diskon;
+                                                @endphp
+                                                Harga : Rp<del>{{ number_format($item->produk->harga_produk) }}</del>
+                                                <span class="text-primary">{{ number_format($harga_setelah_diskon) }}</span>
+                                            @else
+                                                Harga : Rp {{ number_format($item->produk->harga_produk) }}
+                                            @endif
                                             <br>
                                             Total : <span class="text-danger">Rp
                                                 {{ number_format($item->produk->harga_produk * $item->jumlah) }}</span>

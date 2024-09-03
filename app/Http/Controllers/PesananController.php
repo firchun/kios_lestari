@@ -70,6 +70,9 @@ class PesananController extends Controller
             'alamat_pengantaran' => 'nullable|string',
         ]);
         $produk = Produk::find($request->input('id_produk'));
+        $diskon = ($produk->harga_produk * $produk->jumlah_diskon) / 100;
+        $harga_setelah_diskon = $produk->harga_produk - $diskon;
+
         $PesananData = [
             'id_user' => $request->input('id_user'),
             'id_produk' => $request->input('id_produk'),
@@ -78,7 +81,7 @@ class PesananController extends Controller
             'nama_penerima' => $request->input('nama_penerima'),
             'nomor_penerima' => $request->input('nomor_penerima'),
             'alamat_pengantaran' => $request->input('alamat_pengantaran'),
-            'total_harga' => $request->input('jumlah') * $produk->harga_produk,
+            'total_harga' => $produk->diskon == 1 ? $request->input('jumlah') * $harga_setelah_diskon : $request->input('jumlah') * $produk->harga_produk,
             'no_invoice' => Pesanan::generateInvoiceNumber(),
         ];
         if ($request->input('diantar') == 1) {
@@ -90,7 +93,7 @@ class PesananController extends Controller
             $area = AreaPengantaran::find($request->input('id_area'));
             // dd($request->input('id_area'));
             $PesananData['biaya_pengantaran'] = $area->harga;
-            $PesananData['total_harga'] =  ($request->input('jumlah') * $produk->harga_produk) + $area->harga;
+            $PesananData['total_harga'] =  ($request->input('jumlah') * ($produk->diskon == 1 ? $harga_setelah_diskon : $produk->harga_produk)) + $area->harga;
         }
 
         $cek_stok = Stok::getStok($request->input('id_produk'));
@@ -141,6 +144,36 @@ class PesananController extends Controller
                 return back();
             }
         }
+    }
+    public function updateStatus(Request $request)
+    {
+
+        $pesanan = Pesanan::find($request->input('id'));
+        $pesanan->status = $request->input('status');
+        $pesanan->save();
+
+        $check_stok = Stok::getStok($pesanan->id_produk);
+        if ($check_stok < $pesanan->jumlah && $pesanan->jenis == 'pre-order' && $request->input('status') == 'pesanan telah selesai') {
+            $jumlah_dipesan = $pesanan->jumlah;
+            $stok_tersedia = $check_stok;
+            $stok_dibutuhkan = $jumlah_dipesan - $stok_tersedia;
+
+            //tambahkan stok baru sesuai kebutuhan
+            $stok = new Stok();
+            $stok->id_produk = $pesanan->id_produk;
+            $stok->jenis = 'masuk';
+            $stok->jumlah = $stok_dibutuhkan;
+            $stok->save();
+
+            //tambahkan stok penjualan sesaui pesanan
+            $stok = new Stok();
+            $stok->id_produk = $pesanan->id_produk;
+            $stok->jenis = 'penjualan';
+            $stok->jumlah = $pesanan->jumlah;
+            $stok->save();
+        }
+        session()->flash('success', 'Pesanan berhasil diupdate');
+        return back();
     }
     public function dibatalkan($id)
     {

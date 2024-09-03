@@ -50,8 +50,11 @@ class PembayaranController extends Controller
         }
         return DataTables::of($pembayaran)
             ->addColumn('foto', function ($pembayaran) {
-
-                return '<a href="' . Storage::url($pembayaran->foto) . '" target="__blank"><img src="' . Storage::url($pembayaran->foto) . '" style="width:100px;height:100px;object-fit:cover;"></a>';
+                if ($pembayaran->foto != null) {
+                    return '<a href="' . Storage::url($pembayaran->foto) . '" target="__blank"><img src="' . Storage::url($pembayaran->foto) . '" style="width:100px;height:100px;object-fit:cover;"></a>';
+                } else {
+                    return 'Foto tidak tersedia';
+                }
             })
             ->addColumn('produk', function ($pembayaran) {
                 return $pembayaran->pesanan->produk->nama_produk;
@@ -61,7 +64,9 @@ class PembayaranController extends Controller
             })
             ->addColumn('action', function ($pembayaran) {
                 if ($pembayaran->terverifikasi == 0) {
-                    return '<a href="' . route('pembayaran.verifikasi', $pembayaran->id) . '" class="btn btn-primary">Verifikasi</a>';
+                    $verifikasi = '<a href="' . route('pembayaran.verifikasi', $pembayaran->id) . '" class="btn btn-primary">Verifikasi</a>';
+                    $tolak = '<a href="' . route('pembayaran.tolak', $pembayaran->id) . '" class="btn mx-1 btn-danger">Tolak</a>';
+                    return $verifikasi . $tolak;
                 } else {
                     return 'Terverifikasi';
                 }
@@ -76,6 +81,14 @@ class PembayaranController extends Controller
         $pembayaran->terverifikasi = 1;
         $pembayaran->save();
         session()->flash('success', 'Berhasil berifikasi bukti pembayaran');
+        return redirect()->back();
+    }
+    public function tolak($id)
+    {
+        $pembayaran = Pembayaran::find($id);
+        $pembayaran->terverifikasi = 2;
+        $pembayaran->save();
+        session()->flash('success', 'pembayaran berhasil ditolak');
         return redirect()->back();
     }
 }

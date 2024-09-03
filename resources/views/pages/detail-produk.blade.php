@@ -50,8 +50,22 @@
                 </div>
                 <hr>
                 <div class="my-2">
-                    <span class="text-danger  h3" style="font-weight: bolder;">Rp
-                        {{ number_format($produk->harga_produk) }}</span> <span>/{{ $produk->satuan_produk }}</span>
+                    @if ($produk->diskon == 1)
+                        @php
+                            $diskon = ($produk->harga_produk * $produk->jumlah_diskon) / 100;
+                            $harga_setelah_diskon = $produk->harga_produk - $diskon;
+                        @endphp
+                        <span class="text-danger  h3" style="font-weight: bolder;"><del>Rp
+                                {{ number_format($produk->harga_produk) }}</del></span>
+                        <span>/{{ $produk->satuan_produk }}</span>
+                        <br>
+                        <span class="text-primary  h3" style="font-weight: bolder;">Rp
+                            {{ number_format($harga_setelah_diskon) }}</span>
+                        <span>/{{ $produk->satuan_produk }}</span>
+                    @else
+                        <span class="text-danger  h3" style="font-weight: bolder;">Rp
+                            {{ number_format($produk->harga_produk) }}</span> <span>/{{ $produk->satuan_produk }}</span>
+                    @endif
                 </div>
                 <strong>Keterangan Produk : </strong>
                 <p>{{ $produk->keterangan_produk }}</p>
@@ -164,7 +178,8 @@
                                     <label>Pilih area pengantaran</label>
                                     <select class="form-control" name="id_area">
                                         @foreach (App\Models\AreaPengantaran::all() as $item)
-                                            <option>{{ $item->nama }} - Rp {{ number_format($item->harga) }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->nama }} - Rp
+                                                {{ number_format($item->harga) }}</option>
                                         @endforeach
                                     </select>
                                 </div>

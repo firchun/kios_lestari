@@ -50,14 +50,45 @@
                                             <small>{{ $item->status }}</small>
                                         </td>
                                         <td class="text-left">
-                                            Harga : Rp {{ number_format($item->produk->harga_produk) }}
+                                            @if ($item->jumlah * $item->produk->harga_produk == $item->total_harga)
+                                                Harga : Rp {{ number_format($item->produk->harga_produk) }}
+                                            @else
+                                                @php
+                                                    $diskon =
+                                                        ($item->produk->harga_produk * $item->produk->jumlah_diskon) /
+                                                        100;
+                                                    $harga_setelah_diskon = $item->produk->harga_produk - $diskon;
+                                                @endphp
+                                                Harga : Rp <del>{{ number_format($item->produk->harga_produk) }}</del>
+                                                <span
+                                                    class="text-primary">{{ number_format($harga_setelah_diskon) }}</span>
+                                            @endif
                                             <br>
                                             Total : <span class="text-danger">Rp
                                                 {{ number_format($item->total_harga) }}</span><br>
                                             Pembayaran :
-                                            {!! App\Models\Pembayaran::where('id_pesanan', $item->id)->count() != 0
-                                                ? '<span class="text-success">Lunas</span>'
-                                                : '<span class="text-danger">Belum lunas</span>' !!}
+                                            @php
+                                                $check_pembayaran = App\Models\Pembayaran::where(
+                                                    'id_pesanan',
+                                                    $item->id,
+                                                )
+                                                    ->latest()
+                                                    ->first();
+
+                                            @endphp
+                                            @if ($check_pembayaran)
+                                                @if ($check_pembayaran->terverifikasi == 1)
+                                                    <span class="text-success">Lunas</span>
+                                                @elseif($check_pembayaran->terverifikasi == 2)
+                                                    <span class="text-danger">Pembayaran ditolak</span>
+                                                @else
+                                                    <span class="text-danger">Menunggu Verifikasi</span>
+                                                @endif
+                                            @else
+                                                <span class="text-danger">Belum
+                                                    lunas</span>
+                                            @endif
+
                                         </td>
                                         <td class="qua-col first-row">
                                             <strong>{{ $item->jumlah }}</strong><br>
@@ -75,7 +106,7 @@
                                                 style="display:inline-block;border-radius:0px;">
                                                 Detail</a><br>
 
-                                            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->count() == 0)
+                                            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', '!=', [2, 0])->count() == 0)
                                                 <button type="button" class="btn btn-sm btn-outline-success btn-block"
                                                     style="display:inline-block; border-radius:0px;" data-toggle="modal"
                                                     data-target="#bayar-{{ $item->id }}">
@@ -150,7 +181,7 @@
                     </div>
                 </div>
             @endif
-            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->count() == 0)
+            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', '!=', [2, 0])->count() == 0)
                 <div class="modal fade" id="bayar-{{ $item->id }}" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -158,9 +189,18 @@
                             <div class="modal-header">
                                 Upload Bukti Pembayaran : ({{ $item->no_invoice }})
                             </div>
+
                             <form action="{{ route('pembayaran.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
+                                    @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', 2)->count() != 0)
+                                        <div class="my-3">
+                                            <div class="alert alert-danger  show" role="alert">
+                                                Mohon maaf, Pembayaran sebelumnya ditolak..<br> silahkan upload ulang bukti
+                                                pembayaran anda..
+                                            </div>
+                                        </div>
+                                    @endif
                                     <input type="hidden" name="id_pesanan" value="{{ $item->id }}">
                                     <div class="mb-3">
                                         <label>Jumlah Pembayaran (Rp)</label>
@@ -216,9 +256,13 @@
                                 </form>
                             @else
                                 <div class="modal-body">
-                                    @if ($return->disetujui == 1)
+                                    @if ($return->disetujui == 1 && $return->selesai != 1)
                                         <div class="alert alert-primary  show" role="alert">
                                             Status : Pengajuan telah disetujui
+                                        </div>
+                                    @elseif($return->disetujui == 1 && $return->selesai == 1)
+                                        <div class="alert alert-primary  show" role="alert">
+                                            Status : Return telah selesai
                                         </div>
                                     @else
                                         <div class="alert alert-primary  show" role="alert">
@@ -311,6 +355,24 @@
                                             class="text-{{ $item->diantar == 1 ? 'primary' : 'danger' }}">{{ $item->diantar == 1 ? 'Diantar' : 'Tidak' }}</strong>
                                     </td>
                                 </tr>
+                                @php
+                                    $check_pembayaran = App\Models\Pembayaran::where('id_pesanan', $item->id)
+                                        ->latest()
+                                        ->first();
+
+                                @endphp
+                                @if ($check_pembayaran)
+                                    <tr>
+                                        <td>Bukti Pembayaran</td>
+                                        <td>:</td>
+                                        <td><a href="{{ Storage::url($check_pembayaran->foto) }}" target="__blank">
+                                                <img src="{{ Storage::url($check_pembayaran->foto) }}"
+                                                    style="width: 100px; height: 100px; object-fit: cover;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+
                             </table>
                             @if ($item->diantar == 1)
                                 <strong>Detail Pengantaran : </strong>

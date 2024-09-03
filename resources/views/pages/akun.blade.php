@@ -22,6 +22,7 @@
                             style="object-fit: cover; width:100%;">
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                             <img src="{{ asset('img/user.png') }}" style="height: 100px;" alt="user image"
                                 class="d-block ms-0 ms-sm-4 rounded user-profile-img">
@@ -42,6 +43,14 @@
                                         </li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="my-3 align-items-center">
+                            <div class="border border-warning p-2 " style="border-radius: 10px;">
+                                <h2 class="font-weight-bold text-danger">🎉{{ App\Models\User::userPoint(Auth::id()) }}
+                                    Point
+                                </h2>
+                                <span>Saldo : <b>{{ App\Models\User::userSaldo(Auth::id()) }}</b></span>
                             </div>
                         </div>
                     </div>

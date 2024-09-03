@@ -41,4 +41,18 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    static function userPoint($id)
+    {
+        $jumlah = Pesanan::where('id_user', $id)->count();
+        $reward = Setting::first()->point;
+        $point = number_format($jumlah * $reward);
+        return $point;
+    }
+    static function userSaldo($id)
+    {
+        $point = self::userPoint($id);
+        $saldo = Setting::first()->saldo_point;
+        return 'Rp ' . number_format($point * $saldo);
+    }
 }

@@ -88,9 +88,15 @@
                             data: 'terverifikasi',
                             name: 'terverifikasi',
                             render: function(data, type, row) {
-                                return data == 1 ?
-                                    '<span class="badge badge-success">Terverifikasi</span>' :
-                                    '<span class="badge badge-danger">Belum</span>';
+                                if (data == 1) {
+                                    return '<span class="badge badge-success">Terverifikasi</span>';
+                                } else if (data == 2) {
+                                    return '<span class="badge badge-warning">Ditolak</span>';
+                                } else if (data == 0) {
+                                    return '<span class="badge badge-secondary">Belum</span>';
+                                } else {
+                                    return '<span class="badge badge-light">Tidak Diketahui</span>'; // Optional: Handle unexpected values
+                                }
                             }
 
                         },

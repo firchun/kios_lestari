@@ -10,4 +10,8 @@ class Produk extends Model
     use HasFactory;
     protected $table = 'produk';
     protected $guarded = [];
+    public function stok()
+    {
+        return $this->hasMany(Stok::class, 'id_produk');
+    }
 }

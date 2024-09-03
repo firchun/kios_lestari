@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
     $title = 'Home';
     $setting = Setting::getSetting();
     $produk = Produk::latest()->limit(4)->get();
@@ -95,6 +96,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::post('/rating/store',  [RatingController::class, 'store'])->name('rating.store');
     //buat pesanan
     Route::post('/pesanan/store',  [PesananController::class, 'store'])->name('pesanan.store');
+    Route::post('/pesanan/update',  [PesananController::class, 'updateStatus'])->name('pesanan.update');
     Route::get('/pesanan/dibatalkan/{id}',  [PesananController::class, 'dibatalkan'])->name('pesanan.dibatalkan');
     Route::get('/pesanan/edit/{id}',  [PesananController::class, 'edit'])->name('pesanan.edit');
     //akun managemen
@@ -127,6 +129,7 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     //pembayaran managemen
     Route::get('/pembayaran',  [PembayaranController::class, 'index'])->name('pembayaran');
     Route::get('/pembayaran/verifikasi/{id}',  [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
+    Route::get('/pembayaran/tolak/{id}',  [PembayaranController::class, 'tolak'])->name('pembayaran.tolak');
     // Route::get('/pembayaran-datatable', [PembayaranController::class, 'getpembayaranDataTable']);
     //pengantaran managemen
     Route::get('/pengantaran',  [PengantaranController::class, 'index'])->name('pengantaran');

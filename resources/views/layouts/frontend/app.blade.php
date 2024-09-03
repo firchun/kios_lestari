@@ -49,6 +49,7 @@
             background-color: #004692;
         }
     </style>
+
 </head>
 
 <body>
@@ -57,7 +58,42 @@
         <div class="loader"></div>
     </div>
     @include('layouts.frontend.header')
-
+    @if (Auth::check() && session('showModal'))
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content " style="border-radius: 20px;">
+                    <div class="modal-header pb-0 text-center">
+                        <b>
+                            @if (App\Models\User::userPoint(Auth::id()) != 0)
+                                HORE!!!
+                            @else
+                                ya...🥲
+                            @endif
+                        </b>
+                        <button type="button" class="close mb-3" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        @if (App\Models\User::userPoint(Auth::id()) != 0)
+                            <h1>🎉</h1>
+                            <p>Hore, Point kamu udah <b
+                                    class="text-danger">{{ App\Models\User::userPoint(Auth::id()) }}
+                                    Point</b>..<br>Yuk
+                                perbanyak point kamu dengan belanja di {{ env('APP_NAME') }}</p>
+                            <a href="{{ url('/my-akun') }}" class="btn btn-outline-primary">Cek di sini</a>
+                        @else
+                            <h1>🥲</h1>
+                            <p>
+                                Kamu belum memiliki point, yuk belanja agar mendapatkan point..
+                            </p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     @yield('content')
     <!-- Tombol Chat -->
     <div class="chat-button">
@@ -81,6 +117,15 @@
     <script src="{{ asset('frontend_theme') }}/js/main.js"></script>
     <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            @if (Auth::check() && session('showModal'))
+                $('#exampleModal').modal('show');
+                // Hapus session setelah menampilkan modal
+                @php session()->forget('showModal'); @endphp
+            @endif
+        });
+    </script>
     @if (session('error'))
         <script>
             Swal.fire({

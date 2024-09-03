@@ -53,6 +53,25 @@
             $('.refresh').click(function() {
                 $('#datatable-pesanan').DataTable().ajax.reload();
             });
+            window.updatePesanan = function(id) {
+                $('#updatepesanan').modal('show');
+                $('#loadingIndicatorUpdatePesanan').show();
+                $.ajax({
+                    type: 'GET',
+                    url: '/pesanan/edit/' + id,
+                    success: function(response) {
+                        $('#idPesanan').val(response.id);
+                        $('#selectStatus').val(response.status);
+                        $('#formUpdatePesanan').show();
+                        $('#formUpdatePembayaran').hide();
+                        $('#loadingIndicatorUpdatePesanan').hide();
+                    },
+                    error: function(xhr) {
+                        $('#loadingIndicatorUpdatePesanan').hide();
+                        alert('Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            }
             window.updatePengantaran = function(id) {
                 $('#pengantaran').modal('show');
                 $.ajax({
@@ -61,6 +80,7 @@
                     success: function(response) {
                         if ($.isEmptyObject(response)) {
                             // Jika respons kosong, tampilkan formPengantaran dan sembunyikan updatePengantaranSelesai
+
                             $('#formPengantaran').show();
                             $('#updatePengantaranSelesai').hide();
                         } else {
@@ -87,7 +107,7 @@
                     type: 'GET',
                     url: '/pesanan/edit/' + id,
                     success: function(response) {
-                        $('#idPesanan').val(response.id);
+                        $('#idPesanan2').val(response.id);
                         $('#tablePengantaran').empty();
                         var html = `
                             <strong>Detail Pengantaran :</strong>
