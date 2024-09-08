@@ -69,6 +69,7 @@ class ProdukController extends Controller
             'satuan_produk' => 'required|string|max:20',
             'keterangan_produk' => 'required|string',
             'harga_produk' => 'required|string',
+            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $ProdukData = [
@@ -77,6 +78,12 @@ class ProdukController extends Controller
             'keterangan_produk' => $request->input('keterangan_produk'),
             'harga_produk' => $request->input('harga_produk'),
         ];
+        if ($request->hasFile('foto_produk')) {
+            $file = $request->file('foto_produk');
+            $filePath = $file->store('foto_produk', 'public');
+            $ProdukData['foto_produk'] = $filePath;
+        }
+
 
         if ($request->filled('id')) {
             $Produk = Produk::find($request->input('id'));

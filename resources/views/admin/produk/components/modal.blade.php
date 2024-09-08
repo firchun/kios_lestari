@@ -10,8 +10,14 @@
             </div>
             <div class="modal-body">
                 <!-- Form for Create and Edit -->
-                <form id="userForm">
+                <form id="userForm" enctype="multipart/form-data">
                     <input type="hidden" id="formProdukId" name="id">
+                    <div class="mb-3">
+                        <label for="formCustomerName" class="form-label">Foto Produk (kosongkan jika tidak
+                            merubah)</label>
+                        <input type="file" class="form-control" id="formCustomerFotoProduk" name="foto_produk"
+                            required>
+                    </div>
                     <div class="mb-3">
                         <label for="formCustomerName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="formCustomerName" name="nama_produk" required>
@@ -53,7 +59,12 @@
             </div>
             <div class="modal-body">
                 <!-- Form for Create and Edit -->
-                <form id="createUserForm">
+                <form id="createUserForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="formCustomerName" class="form-label">Foto Produk</label>
+                        <input type="file" class="form-control" id="formCustomerFotoProduk" name="foto_produk"
+                            required>
+                    </div>
                     <div class="mb-3">
                         <label for="formCustomerName" class="form-label">Nama Produk</label>
                         <input type="text" class="form-control" id="formCustomerName" name="nama_produk" required>

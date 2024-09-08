@@ -71,12 +71,14 @@
                 });
             };
             $('#saveCustomerBtn').click(function() {
-                var formData = $('#userForm').serialize();
+                var formData = new FormData($('#userForm')[0]);
 
                 $.ajax({
                     type: 'POST',
                     url: '/produk/store',
                     data: formData,
+                    processData: false, // Jangan memproses data form menjadi string
+                    contentType: false, // Jangan set content type header
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -91,6 +93,7 @@
                     }
                 });
             });
+
             $('#btnDiskonSave').click(function() {
                 var formData = $('#formUpdateDiskon').serialize();
 
@@ -112,12 +115,14 @@
                 });
             });
             $('#createCustomerBtn').click(function() {
-                var formData = $('#createUserForm').serialize();
+                var formData = new FormData($('#createUserForm')[0]);
 
                 $.ajax({
                     type: 'POST',
                     url: '/produk/store',
                     data: formData,
+                    processData: false, // Jangan memproses data form menjadi string
+                    contentType: false, // Jangan set content type header
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -133,6 +138,7 @@
                     }
                 });
             });
+
 
             window.deleteCustomers = function(id) {
                 if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
