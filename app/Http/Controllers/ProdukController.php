@@ -48,7 +48,7 @@ class ProdukController extends Controller
             })
             ->addColumn('diskon', function ($Produk) {
 
-                $tombol = '<button type="button" class="btn btn-primary btn-sm mt-2">Update</button>';
+                $tombol = '<button type="button" class="btn btn-primary btn-sm mt-2"  onclick="updateDiskon(' . $Produk->id . ')">Update</button>';
                 $diskon = $Produk->diskon == 1 ? '<span class="badge badge-danger">Diskon ' . $Produk->jumlah_diskon . '%</span>' : '<span class="badge badge-warning">Tidak</span>';
                 return '<div class="text-center">' . $diskon . '<br>' . $tombol . '</div>';
             })
@@ -90,6 +90,33 @@ class ProdukController extends Controller
             Produk::create($ProdukData);
             $message = 'Produk created successfully';
         }
+
+        return response()->json(['message' => $message]);
+    }
+    public function updateDiskon(Request $request)
+    {
+        $request->validate([
+            'diskon' => 'required|string',
+            'jumlah_diskon' => 'required|string',
+        ]);
+
+        $ProdukData = [
+            'diskon' => $request->input('diskon'),
+            'jumlah_diskon' => $request->input('jumlah_diskon'),
+        ];
+
+        if ($request->filled('id')) {
+            $Produk = Produk::find($request->input('id'));
+            if (!$Produk) {
+                return response()->json(['message' => 'Produk not found'], 404);
+            }
+
+            $Produk->update($ProdukData);
+            $message = 'Berhasil memperbarui diskon';
+        } else {
+            $message = 'Gagal memperbarui diskon';
+        }
+
 
         return response()->json(['message' => $message]);
     }

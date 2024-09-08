@@ -46,7 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $jumlah = Pesanan::where('id_user', $id)->count();
         $reward = Setting::first()->point;
-        $point = number_format($jumlah * $reward);
+        $terpakai =  point::where('id_user', $id)->sum('jumlah');
+        $point = number_format(($jumlah * $reward) - $terpakai);
         return $point;
     }
     static function userSaldo($id)

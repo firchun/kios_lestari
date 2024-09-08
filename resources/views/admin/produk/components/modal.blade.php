@@ -110,3 +110,37 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="update-diskon" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">Update Diskon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body ">
+                <form id="formUpdateDiskon">
+                    <input type="hidden" name="id" id="diskonProdukId">
+                    <div class="mb-3">
+                        <label>Diskon</label>
+                        <select class="form-control" name="diskon" id="selectDiskon">
+                            <option value="0">Non-aktif</option>
+                            <option value="1">Aktif</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Besaran Diskon (1-100 %)</label>
+                        <div class="input-group">
+                            <input type="number" name="jumlah_diskon" id="diskonJumlahDiskon" class="form-control">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnDiskonSave" class="btn btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>

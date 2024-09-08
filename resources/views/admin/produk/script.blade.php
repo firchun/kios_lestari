@@ -91,6 +91,26 @@
                     }
                 });
             });
+            $('#btnDiskonSave').click(function() {
+                var formData = $('#formUpdateDiskon').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/produk/update-diskon',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#datatable-produk').DataTable().ajax.reload();
+                        $('#update-diskon').modal('hide');
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            });
             $('#createCustomerBtn').click(function() {
                 var formData = $('#createUserForm').serialize();
 
@@ -140,6 +160,22 @@
                     success: function(response) {
                         $('#stokProdukId').val(response.id);
                         $('#txtNamaProduk').text(response.nama_produk);
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            };
+            window.updateDiskon = function(id) {
+                $('#update-diskon').modal('show');
+                $.ajax({
+                    type: 'GET',
+                    url: '/produk/edit/' + id,
+                    success: function(response) {
+                        $('#diskonProdukId').val(response.id);
+                        $('#diskonJumlahDiskon').val(response.jumlah_diskon);
+                        $('#selectDiskon').val(response.diskon);
+                        console.log(response.diskon);
                     },
                     error: function(xhr) {
                         alert('Terjadi kesalahan: ' + xhr.responseText);

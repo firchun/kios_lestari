@@ -7,6 +7,7 @@ use App\Models\point;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class PointController extends Controller
@@ -30,17 +31,29 @@ class PointController extends Controller
             ->addColumn('point', function ($user) {
                 $jumlah = Pesanan::where('id_user', $user->id)->count();
                 $reward = Setting::first()->point;
-                return '<span class="font-weight-bold h5 text-danger">' . number_format($jumlah * $reward) . '</span> Point';
+                $terpakai = point::where('id_user', $user->id)->sum('jumlah');
+                return '<span class="font-weight-bold h5 text-danger">' . number_format(($jumlah * $reward) - $terpakai) . '</span> Point';
             })
             ->addColumn('saldo', function ($user) {
                 $jumlah = Pesanan::where('id_user', $user->id)->count();
                 $reward = Setting::first()->point;
                 $saldo = Setting::first()->saldo_point;
-                return '<span class="font-weight-bold h5 text-danger">Rp ' . number_format(($jumlah * $reward) * $saldo) . '</span>';
+                $terpakai = point::where('id_user', $user->id)->sum('jumlah');
+                return '<span class="font-weight-bold h5 text-danger">Rp ' . number_format((($jumlah  * $reward) - $terpakai) * $saldo) . '</span>';
             })
 
 
             ->rawColumns(['action', 'point', 'saldo'])
             ->make(true);
+    }
+    public function store(Request $request)
+    {
+        $point = new point();
+        $point->id_user = $request->input('id_user');
+        $point->jumlah = $request->input('jumlah');
+        $point->save();
+
+        $message = 'Berhasil mengubah Point';
+        return response()->json(['message' => $message]);
     }
 }

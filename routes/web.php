@@ -117,6 +117,7 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     Route::put('/setting/update', [SettingController::class, 'update'])->name('setting.update');
     //point managemen
     Route::get('/point', [PointController::class, 'index'])->name('point');
+    Route::post('/point/store', [PointController::class, 'store'])->name('point.store');
     Route::get('/point-datatable', [PointController::class, 'getPointDataTable']);
     //pesanan managemen
     Route::get('/pemesanan', [PesananController::class, 'index'])->name('pemesanan');
@@ -151,6 +152,7 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     //produk managemen
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
     Route::post('/produk/store',  [ProdukController::class, 'store'])->name('produk.store');
+    Route::post('/produk/update-diskon',  [ProdukController::class, 'updateDiskon'])->name('produk.update-diskon');
     Route::get('/produk/edit/{id}',  [ProdukController::class, 'edit'])->name('produk.edit');
     Route::delete('/produk/delete/{id}',  [ProdukController::class, 'destroy'])->name('produk.delete');
     Route::get('/produk-datatable', [ProdukController::class, 'getProdukDataTable']);

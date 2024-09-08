@@ -12,6 +12,36 @@
             </button>
         </div>
     </div>
+    <div class="my-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-box">
+                    <div class="card-header">
+                        Ketentuan Point
+                    </div>
+                    <div class="card-body font-weight-bold text-danger">
+                        1 point = Rp {{ number_format(App\Models\Setting::first()->saldo_point) }}
+                    </div>
+                    <div class="card-footer">
+                        <small class="font-weight-italic">Ketentuan dapat dirubah pada setting</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-box">
+                    <div class="card-header">
+                        Ketentuan Transaksi
+                    </div>
+                    <div class="card-body font-weight-bold text-danger">
+                        1x Transaksi = {{ number_format(App\Models\Setting::first()->point) }} Point
+                    </div>
+                    <div class="card-footer">
+                        <small class="font-weight-italic">Ketentuan dapat dirubah pada setting</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card-box mb-30">
@@ -54,22 +84,50 @@
                         ×
                     </button>
                 </div>
-                <form id="">
+                <form id="formChangePoint">
                     <div class="modal-body">
+                        <div class="d-flex justify-content-end">
+                            <div class="">
+                                <h3 class="text-danger" id="jumlah-rupiah">Rp </h3>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_user" id="idChange">
                         <div class="mb-3">
                             <label>Jumlah Point</label>
-                            <input type="number" class="form-control" name="jumlah" value="1" required>
+                            <input type="number" class="form-control" name="jumlah" id="jumlahPoint" value="1"
+                                required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary" id="btnSaveChange">Submit</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
 @endsection
 @push('js')
+    <script>
+        $(document).ready(function() {
+            function updateAmount() {
+                var jumlah = $('#jumlahPoint').val();
+
+                var amount = jumlah * {{ App\Models\Setting::first()->saldo_point }};
+
+                var formattedAmount = 'Rp ' + amount.toLocaleString('id-ID');
+
+                $('#jumlah-rupiah').text(formattedAmount);
+            }
+
+            updateAmount();
+
+            // Attach an event listener to the input to call the updateAmount function on change
+            $('#jumlahPoint').on('input', function() {
+                updateAmount();
+            });
+        });
+    </script>
     <script>
         $(function() {
             $('#datatable-users').DataTable({
@@ -115,11 +173,34 @@
                 url: '/users/edit/' + id,
                 success: function(response) {
                     $('#namaUser').text(response.name);
+                    $('#idChange').val(response.id);
+
                 },
                 error: function(xhr) {
                     alert('Terjadi kesalahan: ' + xhr.responseText);
                 }
             });
+
         };
+        $('#btnSaveChange').click(function() {
+            var formData = $('#formChangePoint').serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/point/store',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    alert(response.message);
+                    $('#datatable-users').DataTable().ajax.reload();
+                    $('#change').modal('hide');
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan: ' + xhr.responseText);
+                }
+            });
+        });
     </script>
 @endpush
