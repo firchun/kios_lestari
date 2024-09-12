@@ -71,6 +71,9 @@
                 });
             };
             $('#saveCustomerBtn').click(function() {
+                $('#loadingIndicator').show();
+                $('#buttonText').hide();
+
                 var formData = new FormData($('#userForm')[0]);
 
                 $.ajax({
@@ -87,9 +90,13 @@
                         // Refresh DataTable setelah menyimpan perubahan
                         $('#datatable-produk').DataTable().ajax.reload();
                         $('#customersModal').modal('hide');
+                        $('#loadingIndicator').hide();
+                        $('#buttonText').show();
                     },
                     error: function(xhr) {
                         alert('Terjadi kesalahan: ' + xhr.responseText);
+                        $('#loadingIndicator').hide();
+                        $('#buttonText').show();
                     }
                 });
             });
@@ -115,6 +122,8 @@
                 });
             });
             $('#createCustomerBtn').click(function() {
+                $('#createLoadingIndicator').show();
+                $('#createButtonText').hide();
                 var formData = new FormData($('#createUserForm')[0]);
 
                 $.ajax({
@@ -132,9 +141,13 @@
                         $('#formCustomerName').val('');
                         $('#datatable-produk').DataTable().ajax.reload();
                         $('#create').modal('hide');
+                        $('#createLoadingIndicator').hide();
+                        $('#createButtonText').show();
                     },
                     error: function(xhr) {
                         alert('Terjadi kesalahan: ' + xhr.responseText);
+                        $('#createLoadingIndicator').hide();
+                        $('#createButtonText').show();
                     }
                 });
             });

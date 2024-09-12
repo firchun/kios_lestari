@@ -43,7 +43,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveCustomerBtn">Save</button>
+                <button type="button" class="btn btn-primary" id="saveCustomerBtn">
+                    <span id="buttonText">Save</span>
+                    <span id="loadingIndicator" style="display: none;">Menyimpan data...</span>
+                </button>
             </div>
         </div>
     </div>
@@ -90,7 +93,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="createCustomerBtn">Save</button>
+                <button type="button" class="btn btn-primary" id="createCustomerBtn">
+                    <span id="createButtonText">Save</span>
+                    <span id="createLoadingIndicator" style="display: none;">Menyimpan data...</span>
+                </button>
             </div>
         </div>
     </div>
