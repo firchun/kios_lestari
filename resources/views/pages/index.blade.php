@@ -44,25 +44,28 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('frontend_theme') }}/img/banner-1.jpg" alt="">
+                        <img src="{{ asset('img') }}/kayu_potongan.jpg" alt=""
+                            style="width:100%; height:300px; object-fit:cover;">
                         <div class="inner-text">
-                            <h4>Kayu Bakar</h4>
+                            <h4 style="border-radius:10px;  opacity:0.8;">Kayu Bakar</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('frontend_theme') }}/img/banner-2.jpg" alt="">
+                        <img src="{{ asset('img') }}/pasir.jpg" alt=""
+                            style="width:100%; height:300px; object-fit:cover;">
                         <div class="inner-text">
-                            <h4>Pasir</h4>
+                            <h4 style="border-radius:10px;  opacity:0.8;">Pasir</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('frontend_theme') }}/img/banner-3.jpg" alt="">
+                        <img src="{{ asset('img') }}/batu_bata2.jpg" alt=""
+                            style="width:100%; height:300px; object-fit:cover;">
                         <div class="inner-text">
-                            <h4>Batu Bata</h4>
+                            <h4 style="border-radius:10px; opacity:0.8;">Batu Bata</h4>
                         </div>
                     </div>
                 </div>
@@ -83,7 +86,7 @@
                             <div class="product-item">
                                 <div class="pi-pic">
                                     <img src="{{ $item->foto_produk == null ? asset('img/no-image.jpg') : Storage::url($item->foto_produk) }}"
-                                        alt="">
+                                        alt="" style="width:100%; height:400px; object-fit:cover;">
                                     {{-- <div class="sale">Sale</div> --}}
                                     {{-- <div class="icon">
                                         <i class="icon_heart_alt"></i>
@@ -135,49 +138,5 @@
         </div>
     </section>
     <!-- Women Banner Section End -->
-
-
-
-
-
-    <!-- Instagram Section Begin -->
-    <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-1.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-2.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-3.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-4.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-5.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend_theme') }}/img/insta-6.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">{{ env('APP_NAME') }}</a></h5>
-            </div>
-        </div>
-    </div>
-    <!-- Instagram Section End -->
+    @include('pages._instagram')
 @endsection

@@ -21,7 +21,7 @@
                         <div class="product-item">
                             <div class="pi-pic">
                                 <img src="{{ $item->foto_produk == null ? asset('img/no-image.jpg') : Storage::url($item->foto_produk) }}"
-                                    alt="">
+                                    alt="" style="width:100%; height:400px; object-fit:cover;">
                                 {{-- <div class="sale">Sale</div> --}}
                                 {{-- <div class="icon">
                                 <i class="icon_heart_alt"></i>
@@ -70,4 +70,5 @@
             </div>
         </div>
     </div>
+    @include('pages._instagram')
 @endsection

@@ -101,6 +101,7 @@
             <i class="bi bi-chat-dots"></i>
         </a>
     </div>
+
     @include('layouts.frontend.footer')
 
 
