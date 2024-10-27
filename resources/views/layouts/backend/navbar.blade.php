@@ -66,61 +66,19 @@
                                     </p>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
-                                    <img src="vendors/images/photo1.jpg" alt="" />
-                                    <h3>Lea R. Frith</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit, sed...
-                                    </p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="vendors/images/photo2.jpg" alt="" />
-                                    <h3>Erik L. Richards</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit, sed...
-                                    </p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="vendors/images/photo3.jpg" alt="" />
-                                    <h3>John Doe</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit, sed...
-                                    </p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="vendors/images/photo4.jpg" alt="" />
-                                    <h3>Renee I. Hansen</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit, sed...
-                                    </p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="vendors/images/img.jpg" alt="" />
-                                    <h3>Vicki M. Coleman</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit, sed...
-                                    </p>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div> --}}
+        <div class="user-notification">
+            <div class="dropdown">
+                <a href="{{ route('chat-admin') }}" role="button">
+                    <i class="bi bi-chat"></i>
+                    <span id="countAllChat"></span>
+                </a>
+            </div>
+        </div>
         <div class="user-info-dropdown">
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
@@ -146,3 +104,31 @@
 
     </div>
 </div>
+@push('js')
+    <script>
+        $(document).ready(function() {
+            function loadNotificationCount() {
+                $.ajax({
+                    url: `/all-chat-count`,
+                    method: 'GET',
+                    success: function(response) {
+                        let count = response.count || response;
+                        if (count > 0) {
+                            $('#countAllChat').html(
+                                `<span class="badge badge-pill badge-danger">${count}</span>`);
+                        } else {
+                            $('#countAllChat').html('');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading notification count:', error);
+                    }
+                });
+            }
+
+            // Initial load and set interval for periodic updates
+            loadNotificationCount();
+            setInterval(loadNotificationCount, 1000);
+        });
+    </script>
+@endpush

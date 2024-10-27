@@ -193,6 +193,27 @@
                             <form action="{{ route('pembayaran.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
+                                    <div class="my-3">
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <strong> Cara pembayaran :</strong>
+                                            <ol class="p-2">
+                                                <li>Buka Mobile banking / pergi ke ATM terdekat</li>
+                                                <li>Pilih transfer</li>
+                                                <li>Isi nomor rekening tujuan</li>
+                                                <li>ketik nominal transfer (Rp {{ number_format($item->total_harga) }})
+                                                </li>
+                                            </ol>
+                                            <br>
+                                            <strong> Daftar Rekening :</strong>
+                                            <ul class="p-2">
+                                                @foreach (App\Models\Bank::all() as $item)
+                                                    <li><b>{{ $item->nama_bank }}</b> : {{ $item->nama_pemilik }}
+                                                        ({{ $item->no_rekening }})
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                     @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', 2)->count() != 0)
                                         <div class="my-3">
                                             <div class="alert alert-danger  show" role="alert">

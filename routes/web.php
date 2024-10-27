@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AreaPengantaranController;
+use App\Http\Controllers\BankController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\LaporanController;
@@ -71,7 +73,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         $title = 'Pesanan Saya';
         $user = User::find(Auth::id());
         $setting = Setting::getSetting();
-        $pesanan = Pesanan::with(['produk', 'user'])->where('id_user', Auth::id())->paginate(10);
+        $pesanan = Pesanan::with(['produk', 'user'])->where('id_user', Auth::id())->orderBy('id', 'DESC')->paginate(10);
         // dd($pesanan);
         return view('pages.pesanan', ['title' => $title, 'user' => $user, 'setting' => $setting, 'pesanan' => $pesanan]);
     });
@@ -111,8 +113,16 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::get('/customers/edit/{id}',  [CustomerController::class, 'edit'])->name('customers.edit');
     Route::delete('/customers/delete/{id}',  [CustomerController::class, 'destroy'])->name('customers.delete');
     Route::get('/customers-datatable', [CustomerController::class, 'getCustomersDataTable']);
+    //chat
+    Route::get('/messages/{receiverId}', [ChatController::class, 'fetchMessages']);
+    Route::post('/send-message', [ChatController::class, 'sendMessage']);
+    Route::get('/chat-count/{receiverId}',  [ChatController::class, 'chatCount'])->name('seller.chat-count');
+    Route::get('/all-chat-count',  [ChatController::class, 'chaAllCount'])->name('seller.all-chat-count');
 });
 Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
+    //chat
+    Route::get('/chat-admin', [ChatController::class, 'index'])->name('chat-admin');
+    //setting
     Route::get('/setting', [SettingController::class, 'index'])->name('setting');
     Route::put('/setting/update', [SettingController::class, 'update'])->name('setting.update');
     //point managemen
@@ -174,4 +184,10 @@ Route::middleware(['auth:web', 'role:Admin,Owner', 'verified'])->group(function 
     Route::get('/laporan/keuangan', [LaporanController::class, 'keuangan'])->name('laporan.keuangan');
     Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
     Route::get('/laporan/suplai', [LaporanController::class, 'suplai'])->name('laporan.suplai');
+    //bank managemen
+    Route::get('/bank', [BankController::class, 'index'])->name('bank');
+    Route::post('/bank/store',  [BankController::class, 'store'])->name('bank.store');
+    Route::get('/bank/edit/{id}',  [BankController::class, 'edit'])->name('bank.edit');
+    Route::delete('/bank/delete/{id}',  [BankController::class, 'destroy'])->name('bank.delete');
+    Route::get('/bank-datatable', [BankController::class, 'getBankDataTable']);
 });

@@ -41,16 +41,20 @@ class PointController extends Controller
                 $terpakai = point::where('id_user', $user->id)->sum('jumlah');
                 return '<span class="font-weight-bold h5 text-danger">Rp ' . number_format((($jumlah  * $reward) - $terpakai) * $saldo) . '</span>';
             })
-
-
             ->rawColumns(['action', 'point', 'saldo'])
             ->make(true);
     }
     public function store(Request $request)
     {
+        //hitung point
+        $jumlah = Pesanan::where('id_user', $request->input('id_user'))->count();
+        $reward = Setting::first()->point;
+        $terpakai = point::where('id_user', $request->input('id_user'))->sum('jumlah');
+        $point_user = ($jumlah * $reward) - $terpakai;
+        //simpan point
         $point = new point();
         $point->id_user = $request->input('id_user');
-        $point->jumlah = $request->input('jumlah');
+        $point->jumlah = $request->input('jumlah') > $point_user ? $point_user : $request->input('jumlah');
         $point->save();
 
         $message = 'Berhasil mengubah Point';

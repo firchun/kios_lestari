@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Stok;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Mail\DiscountNotification;
+use Illuminate\Support\Facades\Mail;
 
 class ProdukController extends Controller
 {
@@ -119,6 +122,12 @@ class ProdukController extends Controller
             }
 
             $Produk->update($ProdukData);
+
+            $users = User::where('role', 'User')->get();
+
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new DiscountNotification($Produk->nama_produk));
+            }
             $message = 'Berhasil memperbarui diskon';
         } else {
             $message = 'Gagal memperbarui diskon';

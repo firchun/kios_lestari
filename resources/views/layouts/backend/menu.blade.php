@@ -119,6 +119,9 @@
                             <li><a href="{{ route('area') }}" class="{{ request()->is('area') ? 'active' : '' }}">Area
                                     pengantaran </a>
                             </li>
+                            <li><a href="{{ route('bank') }}" class="{{ request()->is('bank') ? 'active' : '' }}">
+                                    Rekening Bank </a>
+                            </li>
 
                         </ul>
                     </li>
@@ -160,9 +163,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" class="dropdown-toggle no-arrow ">
+                        <a href="{{ url('/chat-admin') }}"
+                            class="dropdown-toggle no-arrow {{ request()->is('chat-admin*') ? 'active' : '' }}">
                             <span class="micon bi bi-telephone"></span><span class="mtext">Chat Pelanggan</span>
                         </a>
+
                     </li>
                     <li>
                         <a href="{{ url('/stok') }}"

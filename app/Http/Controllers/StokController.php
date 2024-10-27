@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use App\Models\Stok;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Mail\StockNotification;
+use Illuminate\Support\Facades\Mail;
 
 class StokController extends Controller
 {
@@ -50,6 +54,13 @@ class StokController extends Controller
             'jumlah' => $request->input('jumlah'),
         ];
 
+        $stok_sebelumnya = Stok::getStok($request->input('id_produk'));
+        $produk = Produk::find($request->input('id_produk'));
+
+        if (!$produk) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
         if ($request->filled('id')) {
             $Stok = Stok::find($request->input('id'));
             if (!$Stok) {
@@ -59,8 +70,23 @@ class StokController extends Controller
             $Stok->update($StokData);
             $message = 'Stok updated successfully';
         } else {
-            Stok::create($StokData);
+
+            $Stok = Stok::create($StokData);
             $message = 'Stok created successfully';
+        }
+
+        // Get new stock count
+        $stok_baru = Stok::getStok($Stok->id_produk);
+
+        $users = User::where('role', 'User')->get();
+        if ($stok_sebelumnya == 0 && $stok_baru > 0) {
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new StockNotification('Baru', $produk->nama_produk, $stok_baru));
+            }
+        } elseif ($stok_sebelumnya > 0 && $stok_baru == 0) {
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new StockNotification('Habis', $produk->nama_produk, 0));
+            }
         }
 
         return response()->json(['message' => $message]);

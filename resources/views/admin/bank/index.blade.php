@@ -7,10 +7,16 @@
             <button class="btn btn-secondary refresh btn-default" type="button">
                 <span>
                     <i class="bi bi-arrow-clockwise me-sm-1"> </i>
-                    <span class="d-none d-sm-inline-block">Refresh Data</span>
+                    <span class="d-none d-sm-inline-block"></span>
                 </span>
             </button>
-
+            <button class="btn btn-secondary create-new btn-primary" type="button" data-bs-toggle="modal"
+                data-bs-target="#create">
+                <span>
+                    <i class="bi bi-plus me-sm-1"> </i>
+                    <span class="d-none d-sm-inline-block">Tambah Data</span>
+                </span>
+            </button>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -19,31 +25,30 @@
                 <div class="card-body">
                     <h2>{{ $title }}</h2>
                 </div>
-                <table id="datatable-stok" class="table table-hover table-sm display mb-3">
+                <table id="datatable-customers" class="table table-h0ver  display mb-3">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tanggal</th>
-                            <th>Produk</th>
-                            <th>jenis</th>
-                            <th>Jumlah</th>
-
+                            <th>Nama Bank</th>
+                            <th>Pemilik</th>
+                            <th>No Rekening</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Tanggal</th>
-                            <th>Produk</th>
-                            <th>jenis</th>
-                            <th>Jumlah</th>
+                            <th>Nama Bank</th>
+                            <th>Pemilik</th>
+                            <th>No Rekening</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     </div>
-    @include('admin.stok.components.modal')
+    @include('admin.bank.components.modal')
 @endsection
-@include('admin.stok.script')
+@include('admin.bank.script')
