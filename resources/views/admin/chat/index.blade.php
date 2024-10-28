@@ -128,11 +128,11 @@
                 messagesContainer.html('');
 
                 data.forEach(function(message) {
-                    const senderName = message.sender_id === authUserId ?
+                    const senderName = Number(message.sender_id) === authUserId ?
                         '<span class="sender">Kamu</span>' :
                         `<span class="customer">${message.sender.name}</span>`;
 
-                    const messageClass = message.sender_id === authUserId ? 'text-start' :
+                    const messageClass = Number(message.sender_id) === authUserId ? 'text-start' :
                         'text-end';
 
                     const messageHtml = `

@@ -27,11 +27,11 @@
                 let chatBox = $('#chat-box');
                 chatBox.html('');
                 data.forEach(function(message) {
-                    const senderName = message.sender_id === authUserId ?
+                    const senderName = Number(message.sender_id) === authUserId ?
                         '<span class="sender"> Kamu</span>' :
                         '<span class="admin">Admin</span>';
 
-                    const messageClass = message.sender_id === authUserId ? 'message-left' :
+                    const messageClass = Number(message.sender_id) === authUserId ? 'message-left' :
                         'message-right';
                     const messageHtml = `
                         <div class="message ${messageClass}">
