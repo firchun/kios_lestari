@@ -11,6 +11,7 @@
 </div>
 @push('js')
     <script>
+        const authUserId = {{ Auth::id() }};
         let receiverId =
             {{ App\Models\User::where('role', 'Admin')->latest()->first()->id }}; // Assign the ID of the receiver
         let fetchInterval = 1000;
@@ -26,11 +27,11 @@
                 let chatBox = $('#chat-box');
                 chatBox.html('');
                 data.forEach(function(message) {
-                    const senderName = message.sender_id === {{ Auth::id() }} ?
+                    const senderName = message.sender_id === authUserId ?
                         '<span class="sender"> Kamu</span>' :
                         '<span class="admin">Admin</span>';
 
-                    const messageClass = message.sender_id === {{ Auth::id() }} ? 'message-left' :
+                    const messageClass = message.sender_id === authUserId ? 'message-left' :
                         'message-right';
                     const messageHtml = `
                         <div class="message ${messageClass}">

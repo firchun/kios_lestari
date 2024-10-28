@@ -34,6 +34,6 @@ class StockNotification extends Mailable
     public function build()
     {
         return $this->subject('Stok Update')
-            ->view('emails.stock_notification');
+            ->view('mails.stock_notification');
     }
 }

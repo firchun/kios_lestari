@@ -26,6 +26,6 @@ class DiscountNotification extends Mailable
     public function build()
     {
         return $this->subject('Discount')
-            ->view('emails.discount_notification');
+            ->view('mails.discount_notification');
     }
 }

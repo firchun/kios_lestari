@@ -108,10 +108,10 @@
 @endsection
 @push('js')
     <script>
+        const authUserId = {{ Auth::id() }};
         let selectedCustomerId = null;
         let messagePollingInterval;
 
-        // Event listener for customer selection
         $('.customer').click(function() {
             $('.customer').removeClass('active');
             $(this).addClass('active');
@@ -119,50 +119,43 @@
             selectedCustomerId = $(this).data('customer-id');
             loadMessages(selectedCustomerId);
 
-            // Start polling for new messages
             startMessagePolling(selectedCustomerId);
         });
 
-        // Function to load messages for the selected customer
         function loadMessages(customerId) {
             $.get(`/messages/${customerId}`, function(data) {
-                let messagesContainer = $('#messages'); // Get the messages container
-                messagesContainer.html(''); // Clear previous messages
+                let messagesContainer = $('#messages');
+                messagesContainer.html('');
 
-                // Loop through the fetched messages
                 data.forEach(function(message) {
-                    const senderName = message.sender_id === {{ Auth::id() }} ?
-                        '<span class="sender">Kamu</span>' : // Change 'Kamu' to whatever you prefer
-                        `<span class="customer">${message.sender.name}</span>`; // Display customer name
+                    const senderName = message.sender_id === authUserId ?
+                        '<span class="sender">Kamu</span>' :
+                        `<span class="customer">${message.sender.name}</span>`;
 
-                    const messageClass = message.sender_id === {{ Auth::id() }} ? 'text-start' :
-                        'text-end'; // Determine message alignment
+                    const messageClass = message.sender_id === authUserId ? 'text-start' :
+                        'text-end';
 
-                    // Construct the message HTML
                     const messageHtml = `
                 <div class="${messageClass}">
                     <strong>${senderName}<br></strong>
                     <div class="message-content">${message.message}</div>
                 </div>`;
 
-                    // Append the message HTML to the messages container
                     messagesContainer.append(messageHtml);
                 });
 
-                // Scroll to the bottom of the messages
                 messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
             }).fail(function() {
-                console.error('Failed to load messages.'); // Log error if it fails
+                console.error('Failed to load messages.');
             });
         }
 
-        // Function to start polling for new messages
         function startMessagePolling(customerId) {
             clearInterval(messagePollingInterval);
 
             messagePollingInterval = setInterval(function() {
                 loadMessages(customerId);
-            }, 1000); // Poll every 3 seconds
+            }, 1000);
         }
 
 
@@ -176,10 +169,10 @@
                     receiver_id: selectedCustomerId,
                     message: message
                 }, function() {
-                    $('#adminMessage').val(''); // Clear input
-                    loadMessages(selectedCustomerId); // Reload messages
+                    $('#adminMessage').val('');
+                    loadMessages(selectedCustomerId);
                 }).fail(function() {
-                    console.error('Failed to send message.'); // Log error if it fails
+                    console.error('Failed to send message.');
                 });
             }
         });
@@ -206,7 +199,6 @@
                 });
             }
 
-            // Initial load and set interval for periodic updates
             loadNotificationCount();
             setInterval(loadNotificationCount, 1000);
         });
