@@ -108,7 +108,7 @@
 @endsection
 @push('js')
     <script>
-        const authUserId = {{ Auth::id() }};
+        const authUserId = Number({{ Auth::id() }});
         let selectedCustomerId = null;
         let messagePollingInterval;
 

@@ -11,7 +11,7 @@
 </div>
 @push('js')
     <script>
-        const authUserId = {{ Auth::id() }};
+        const authUserId = Number({{ Auth::id() }});
         let receiverId =
             {{ App\Models\User::where('role', 'Admin')->latest()->first()->id }}; // Assign the ID of the receiver
         let fetchInterval = 1000;
