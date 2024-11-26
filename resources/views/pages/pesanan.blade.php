@@ -149,6 +149,9 @@
         </div>
         <!-- modal -->
         @foreach ($pesanan as $item)
+            @php
+                $idPesanan = $item->id;
+            @endphp
             @if (App\Models\Rating::where('id_pesanan', $item->id)->count() == 0)
                 <div class="modal fade" id="ulasan-{{ $item->id }}" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -222,7 +225,7 @@
                                             </div>
                                         </div>
                                     @endif
-                                    <input type="hidden" name="id_pesanan" value="{{ $item->id }}">
+                                    <input type="hidden" name="id_pesanan" value="{{ $idPesanan }}">
                                     <div class="mb-3">
                                         <label>Jumlah Pembayaran (Rp)</label>
                                         <input type="number" name="jumlah" class="form-control"

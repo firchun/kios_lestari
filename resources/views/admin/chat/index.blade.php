@@ -159,7 +159,6 @@
         }
 
 
-
         // Sending a new message
         $('#sendButton').click(function() {
             const message = $('#adminMessage').val();
