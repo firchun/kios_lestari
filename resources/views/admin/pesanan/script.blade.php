@@ -78,17 +78,18 @@
                     type: 'GET',
                     url: '/pengantaran/pesanan/' + id,
                     success: function(response) {
+                        console.log(response);
                         if ($.isEmptyObject(response)) {
                             // Jika respons kosong, tampilkan formPengantaran dan sembunyikan updatePengantaranSelesai
 
                             $('#formPengantaran').show();
                             $('#updatePengantaranSelesai').hide();
                         } else {
-                            if (response.sampai === 0) {
+                            if (Number(response.sampai) !== 0) {
                                 // Jika sampai === 0, isi nilai id ke idPengantaran, sembunyikan formPengantaran, dan tampilkan updatePengantaranSelesai
+
                                 $('#idPengantaran').val(response.id);
                                 $('#formPengantaran').hide();
-
                                 $('#updatePengantaranSelesai').show();
                             } else {
                                 // Jika sampai !== 0, sembunyikan kedua elemen
