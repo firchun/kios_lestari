@@ -23,7 +23,6 @@
                         <table>
                             <thead>
                                 <tr>
-
                                     <th>No</th>
                                     <th>Invoice</th>
                                     <th>Nama Produk</th>
@@ -88,7 +87,6 @@
                                                 <span class="text-danger">Belum
                                                     lunas</span>
                                             @endif
-
                                         </td>
                                         <td class="qua-col first-row">
                                             <strong>{{ $item->jumlah }}</strong><br>
@@ -168,13 +166,13 @@
 
                                     <div class="mb-3">
                                         <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" class="form-control" required>
+                                        <input type="number" name="rating" class="form-control" min="0"
+                                            max="5" required>
                                     </div>
                                     <div class="mb-3">
                                         <label>Ulasan anda pada produk ini</label>
                                         <textarea name="ulasan" class="form-control" required></textarea>
                                     </div>
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-warning">Upload </button>

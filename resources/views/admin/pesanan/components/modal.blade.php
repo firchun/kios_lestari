@@ -85,7 +85,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -107,11 +106,9 @@
                     </div>
                 </div>
                 <div class="" id="tableDetail"></div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
             </div>
         </div>
     </div>
@@ -191,7 +188,8 @@
                                 <label>Pilih area pengantaran</label>
                                 <select class="form-control" name="id_area">
                                     @foreach (App\Models\AreaPengantaran::all() as $item)
-                                        <option>{{ $item->nama }} - Rp {{ number_format($item->harga) }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->nama }} - Rp
+                                            {{ number_format($item->harga) }}</option>
                                     @endforeach
                                 </select>
                             </div>
