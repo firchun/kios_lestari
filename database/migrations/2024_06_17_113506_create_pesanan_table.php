@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('nama_penerima')->nullable();
             $table->string('nomor_penerima')->nullable();
             $table->string('alamat_pengantaran')->nullable();
-            $table->enum('status', ['pesanan diproses', 'pesanan dalam pengantaran', 'pesanan telah selesai', 'pesanan sampai di lokasi tujuan', 'menunggu barang tersedia'])->default('pesanan diproses');
+            $table->enum('status', ['pesanan ditolak', 'pesanan diproses', 'pesanan dalam pengantaran', 'pesanan telah selesai', 'pesanan sampai di lokasi tujuan', 'menunggu barang tersedia'])->default('pesanan diproses');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users');

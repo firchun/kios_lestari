@@ -48,6 +48,7 @@ class Pesanan extends Model
         return Self::where('id_user', $id_user)
             ->where('status', '!=', 'pesanan telah selesai')
             ->where('status', '!=', 'pesanan sampai di lokasi tujuan')
+            ->where('status', '!=', 'pesanan ditolak')
             ->count();
     }
     static function getCountProduk($id_produk)

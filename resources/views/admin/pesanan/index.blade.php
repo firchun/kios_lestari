@@ -10,7 +10,7 @@
                     <span class="d-none d-sm-inline-block">Refresh Data</span>
                 </span>
             </button>
-            <button class="btn btn-secondary create-new" type="button">
+            <button class="btn btn-primary create-new" type="button">
                 <span>
                     <i class="bi bi-plus me-sm-1"> </i>
                     <span class="d-none d-sm-inline-block">Tambah Pemesanan</span>

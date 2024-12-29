@@ -74,8 +74,9 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         $user = User::find(Auth::id());
         $setting = Setting::getSetting();
         $pesanan = Pesanan::with(['produk', 'user'])->where('id_user', Auth::id())->orderBy('id', 'DESC')->paginate(10);
+        $pesananModal = Pesanan::with(['produk', 'user'])->where('id_user', Auth::id())->get();
         // dd($pesanan);
-        return view('pages.pesanan', ['title' => $title, 'user' => $user, 'setting' => $setting, 'pesanan' => $pesanan]);
+        return view('pages.pesanan', ['title' => $title, 'user' => $user, 'setting' => $setting, 'pesanan' => $pesanan, 'pesananModal' => $pesananModal]);
     });
     Route::get('/keranjang', function () {
         $title = 'Keranjang Saya';

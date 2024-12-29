@@ -81,6 +81,7 @@ class PesananController extends Controller
             'nama_penerima' => $request->input('nama_penerima'),
             'nomor_penerima' => $request->input('nomor_penerima'),
             'alamat_pengantaran' => $request->input('alamat_pengantaran'),
+            'estimasi_pengiriman' => $request->input('estimasi_pengiriman'),
             'total_harga' => $produk->diskon == 1 ? $request->input('jumlah') * $harga_setelah_diskon : $request->input('jumlah') * $produk->harga_produk,
             'no_invoice' => Pesanan::generateInvoiceNumber(),
         ];
@@ -150,6 +151,8 @@ class PesananController extends Controller
 
         $pesanan = Pesanan::find($request->input('id'));
         $pesanan->status = $request->input('status');
+        $pesanan->keterangan = $request->input('keterangan');
+        $pesanan->estimasi_pengiriman = $request->input('estimasi_pengiriman');
         $pesanan->save();
 
         $check_stok = Stok::getStok($pesanan->id_produk);

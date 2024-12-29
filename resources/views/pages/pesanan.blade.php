@@ -103,31 +103,33 @@
                                                 class="btn btn-sm btn-outline-primary mb-2 btn-block"
                                                 style="display:inline-block;border-radius:0px;">
                                                 Detail</a><br>
-
-                                            @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', '!=', [2, 0])->count() == 0)
-                                                <button type="button" class="btn btn-sm btn-outline-success btn-block"
-                                                    style="display:inline-block; border-radius:0px;" data-toggle="modal"
-                                                    data-target="#bayar-{{ $item->id }}">
-                                                    Bayar</button>
-                                            @endif
-                                            @if ($item->status == 'pesanan diproses')
-                                                <a href="{{ route('pesanan.dibatalkan', $item->id) }}"
-                                                    class="btn btn-sm btn-outline-danger btn-block"
-                                                    style="display:inline-block; border-radius:0px;">
-                                                    Batalkan</a>
-                                            @elseif($item->status == 'pesanan sampai di lokasi tujuan' || ($item->status = 'pesanan telah selesai'))
-                                                @if (App\Models\Rating::where('id_pesanan', $item->id)->count() == 0)
-                                                    <button type="button" class="btn btn-sm btn-warning btn-block"
+                                            @if ($item->status != 'pesanan ditolak')
+                                                @if (App\Models\Pembayaran::where('id_pesanan', $item->id)->where('terverifikasi', '!=', [2, 0])->count() == 0)
+                                                    <button type="button" class="btn btn-sm btn-outline-success btn-block"
                                                         style="display:inline-block; border-radius:0px;" data-toggle="modal"
-                                                        data-target="#ulasan-{{ $item->id }}">
-                                                        Beri Ulasan</button>
+                                                        data-target="#bayar-{{ $item->id }}">
+                                                        Bayar</button>
                                                 @endif
-                                                <a href="#" data-toggle="modal"
-                                                    data-target="#return-{{ $item->id }}"
-                                                    class="btn btn-sm btn-danger mb-2 btn-block"
-                                                    style="display:inline-block;border-radius:0px;">
-                                                    Return</a>
+                                                @if ($item->status == 'pesanan diproses')
+                                                    <a href="{{ route('pesanan.dibatalkan', $item->id) }}"
+                                                        class="btn btn-sm btn-outline-danger btn-block"
+                                                        style="display:inline-block; border-radius:0px;">
+                                                        Batalkan</a>
+                                                @elseif($item->status == 'pesanan sampai di lokasi tujuan' || ($item->status = 'pesanan telah selesai'))
+                                                    @if (App\Models\Rating::where('id_pesanan', $item->id)->count() == 0)
+                                                        <button type="button" class="btn btn-sm btn-warning btn-block"
+                                                            style="display:inline-block; border-radius:0px;"
+                                                            data-toggle="modal" data-target="#ulasan-{{ $item->id }}">
+                                                            Beri Ulasan</button>
+                                                    @endif
+                                                    <a href="#" data-toggle="modal"
+                                                        data-target="#return-{{ $item->id }}"
+                                                        class="btn btn-sm btn-danger mb-2 btn-block"
+                                                        style="display:inline-block;border-radius:0px;">
+                                                        Return</a>
+                                                @endif
                                             @endif
+
                                         </td>
                                     </tr>
                                 @empty
@@ -146,7 +148,7 @@
             </div>
         </div>
         <!-- modal -->
-        @foreach ($pesanan as $item)
+        @foreach ($pesananModal as $item)
             @php
                 $idPesanan = $item->id;
             @endphp
@@ -306,7 +308,7 @@
             @endif
         @endforeach
         {{-- {{ dd($pesanan) }} --}}
-        @foreach ($pesanan as $item)
+        @foreach ($pesananModal as $item)
             <div class="modal fade" id="detailPesanan-{{ $item->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -316,7 +318,8 @@
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-primary  show" role="alert">
-                                Status : <strong> {{ $item->status }}</strong>
+                                Status : <strong> {{ $item->status }}</strong><br>
+                                {{ $item->keterangan ? 'Keterangan : ' . $item->keterangan : '' }}
                             </div>
                             @if (App\Models\Rating::where('id_pesanan', $item->id)->count() != 0)
                                 <div class="alert alert-warning  show" role="alert">
@@ -350,6 +353,13 @@
                                     <td>:</td>
                                     <td>{{ $item->jenis }}<br>
                                         @if ($item->jenis == 'pre-order')
+                                            @if ($item->estimasi_pengiriman != null)
+                                                <small class="p-1 bg-primary text-white"
+                                                    style="border-radius:10px;">Estimasi
+                                                    :
+                                                    {{ $item->estimasi_pengiriman }}</small>
+                                                <br>
+                                            @endif
                                             <small class="text-danger">*pesanan akan diprioritaskan jika stok
                                                 tersedia</small>
                                         @endif

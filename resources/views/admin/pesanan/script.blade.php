@@ -65,6 +65,12 @@
                         $('#formUpdatePesanan').show();
                         $('#formUpdatePembayaran').hide();
                         $('#loadingIndicatorUpdatePesanan').hide();
+                        if (response.jenis == 'pre-order') {
+                            $('#estimasiPengiriman').show();
+                        } else {
+                            $('#estimasiPengiriman').hide();
+
+                        }
                     },
                     error: function(xhr) {
                         $('#loadingIndicatorUpdatePesanan').hide();
@@ -154,11 +160,18 @@
                         var table = $('<table class="table table-sm"></table>');
                         table.append('<tr><td>Produk</td><td>:</td><td>' + response.produk
                             .nama_produk + '</td></tr>');
+
+
                         table.append('<tr><td>Jenis</td><td>:</td><td>' + response.jenis + '<br>' +
                             (response.jenis == 'pre-order' ?
                                 '<small class="text-danger">*pesanan akan diprioritaskan jika stok tersedia</small>' :
                                 '') +
                             '</td></tr>');
+                        if (response.jenis == 'pre-order') {
+                            table.append('<tr><td>Estimasi Pengiriman</td><td>:</td><td>' + response
+                                .estimasi_pengiriman + '</td></tr>');
+                        }
+
                         table.append('<tr><td>Harga</td><td>:</td><td class="text-danger">Rp ' +
                             numberFormat(response.produk.harga_produk) + '</td></tr>');
                         table.append('<tr><td>Jumlah dipesan</td><td>:</td><td>' + response.jumlah +

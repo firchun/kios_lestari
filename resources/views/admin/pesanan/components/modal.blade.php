@@ -18,7 +18,6 @@
                 <form id="formUpdatePembayaran">
                     <div class="mb-3">
                         <label>Update Pembayaran</label>
-
                     </div>
                 </form>
                 <form action="{{ route('pesanan.update') }}" id="formUpdatePesanan" method="POST">
@@ -30,7 +29,16 @@
                         <select class="form-control" name="status" id="selectStatus">
                             <option value="pesanan telah selesai">pesanan telah selesai</option>
                             <option value="menunggu barang tersedia">menunggu barang tersedia</option>
+                            <option value="pesanan ditolak">pesanan ditolak</option>
                         </select>
+                    </div>
+                    <div class="mb-3" id="estimasiPengiriman">
+                        <label>Estimasi Pengiriman</label>
+                        <input type="date" class="form-control" name="estimasi_pengiriman">
+                    </div>
+                    <div class="mb-3">
+                        <label>Keterangan (Opsional)</label>
+                        <textarea class="form-control" name="keterangan"></textarea>
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary">Update Pesanan</button>
@@ -79,7 +87,6 @@
                             <input type="file" name="foto_bukti" class="form-control">
                         </div>
                         <input type="hidden" name="sampai" value="1">
-
                         <button type="button" class="btn btn-primary" id="pengantaranSelesaiBtn">Pengantaran
                             Selesai</button>
                     </form>
