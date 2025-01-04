@@ -141,7 +141,7 @@ Route::middleware(['auth:web', 'role:Admin', 'verified'])->group(function () {
     //pembayaran managemen
     Route::get('/pembayaran',  [PembayaranController::class, 'index'])->name('pembayaran');
     Route::get('/pembayaran/verifikasi/{id}',  [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
-    Route::get('/pembayaran/tolak/{id}',  [PembayaranController::class, 'tolak'])->name('pembayaran.tolak');
+    Route::post('/pembayaran/tolak/{id}',  [PembayaranController::class, 'tolak'])->name('pembayaran.tolak');
     // Route::get('/pembayaran-datatable', [PembayaranController::class, 'getpembayaranDataTable']);
     //pengantaran managemen
     Route::get('/pengantaran',  [PengantaranController::class, 'index'])->name('pengantaran');

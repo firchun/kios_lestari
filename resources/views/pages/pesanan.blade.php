@@ -397,7 +397,17 @@
                                     <tr>
                                         <td>Bukti Pembayaran</td>
                                         <td>:</td>
-                                        <td><a href="{{ Storage::url($check_pembayaran->foto) }}" target="__blank">
+                                        <td>
+                                            @if ($check_pembayaran->terverifikasi == 1)
+                                                <span class="badge badge-success mb-3">Terverifikasi</span>
+                                            @elseif($check_pembayaran->terverifikasi == 2)
+                                                <span class="badge badge-danger mb-3">Ditolak :
+                                                    {{ $check_pembayaran->keterangan }}</span>
+                                            @else
+                                                <span class="badge badge-warning mb-3">Menunggu Verifikasi</span>
+                                            @endif
+                                            <br>
+                                            <a href="{{ Storage::url($check_pembayaran->foto) }}" target="__blank">
                                                 <img src="{{ Storage::url($check_pembayaran->foto) }}"
                                                     style="width: 100px; height: 100px; object-fit: cover;">
                                             </a>

@@ -13,6 +13,7 @@ class PembayaranController extends Controller
     {
         $data = [
             'title' => 'Data Pembayaran Pemesanan',
+            'pembayarans' => Pembayaran::all(),
         ];
         return
             view('admin.pembayaran.index', $data);
@@ -65,10 +66,10 @@ class PembayaranController extends Controller
             ->addColumn('action', function ($pembayaran) {
                 if ($pembayaran->terverifikasi == 0) {
                     $verifikasi = '<a href="' . route('pembayaran.verifikasi', $pembayaran->id) . '" class="btn btn-primary">Verifikasi</a>';
-                    $tolak = '<a href="' . route('pembayaran.tolak', $pembayaran->id) . '" class="btn mx-1 btn-danger">Tolak</a>';
+                    $tolak = '<a href="#" class="btn mx-1 btn-danger" data-toggle="modal" data-target="#modalTolak-' . $pembayaran->id . '">Tolak</a>';
                     return $verifikasi . $tolak;
                 } else {
-                    return 'Terverifikasi';
+                    return 'Terverifikasi<br> <small class="text-mutted">' . $pembayaran->keterangan ?? '' . '</small>';
                 }
             })
 
@@ -83,10 +84,11 @@ class PembayaranController extends Controller
         session()->flash('success', 'Berhasil berifikasi bukti pembayaran');
         return redirect()->back();
     }
-    public function tolak($id)
+    public function tolak(Request $request, $id)
     {
         $pembayaran = Pembayaran::find($id);
         $pembayaran->terverifikasi = 2;
+        $pembayaran->keterangan = $request->input('keterangan');
         $pembayaran->save();
         session()->flash('success', 'pembayaran berhasil ditolak');
         return redirect()->back();
